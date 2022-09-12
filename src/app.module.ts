@@ -6,7 +6,8 @@ import { CryptoService } from './shared/utils/crypto/crypto.service';
 import { TrxService } from './shared/logic/trx/trx.service';
 import { PilaTrxService } from './shared/logic/pila-trx/pila-trx.service';
 import { AlmacenService } from './shared/logic/almacen/almacen.service';
-import { ConnectionMysqlService } from './shared/model-database/connection-mysql/connection-mysql.service';
+import { DatabaseService } from './shared/model-database/database/database.service';
+import { InitDatabaseService } from './shared/model-database/init-database/init-database.service';
 
 @Module({
   imports: [],
@@ -18,7 +19,8 @@ import { ConnectionMysqlService } from './shared/model-database/connection-mysql
     TrxService,
     PilaTrxService,
     AlmacenService,
-    ConnectionMysqlService,
+    DatabaseService,
+    InitDatabaseService,
   ],
 })
 export class AppModule {}
