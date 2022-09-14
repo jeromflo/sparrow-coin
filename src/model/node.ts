@@ -47,7 +47,7 @@ export class Nodo {
     return this.transacciones;
   }
   public getTransaccion(trx: Trx): Trx {
-    return this.transacciones.filter((el) => trx.id === el.id)[0];
+    return this.transacciones.filter((el) => trx.getId() === el.getId())[0];
   }
 
   public getMerkleTree(): MerkleTreeImpl {

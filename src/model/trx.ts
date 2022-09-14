@@ -1,65 +1,84 @@
+import { ITrx } from 'src/interfaces/trx.interface';
+import { IAddress } from './../interfaces/address.interface';
 import { Address } from './address';
-export class Trx {
+import sha256 from 'crypto-js/sha256';
+
+export class Trx implements ITrx {
+  private id: string;
+  private cant: number;
+  private addressDest: IAddress;
+  private addressOrigin: IAddress;
+  private caducidad: number;
+  private timeStamp: number;
   constructor(
-    id: string,
     cant: number,
-    addressDest: Address,
-    addressOrigin: Address,
+    addressDest: IAddress,
+    addressOrigin: IAddress,
     caducida: number,
   ) {
-    this.id = id;
     this.cant = cant;
     this.addressDest = addressDest;
     this.addressOrigin = addressOrigin;
     this.caducidad = caducida;
     this.timeStamp = new Date().getTime();
+    console.log(this);
+
+    /*     this.id = sha256(JSON.stringify(this)).toString();
+     */
   }
-  public get id(): string {
+  public getId(): string {
     return this.id;
   }
 
-  public set id(id: string) {
+  private setId(id: string) {
     this.id = id;
   }
 
-  public get cant(): number {
+  public getCant(): number {
     return this.cant;
   }
 
-  public set cant(cant: number) {
+  public setCant(cant: number) {
     this.cant = cant;
   }
 
-  public get addressDest(): Address {
+  public getAddressDest(): Address {
     return this.addressDest;
   }
 
-  public set addressDest(addressDest: Address) {
+  public setAddressDest(addressDest: Address) {
     this.addressDest = addressDest;
   }
 
-  public get addressOrigin(): Address {
+  public getAddressOrigin(): Address {
     return this.addressOrigin;
   }
 
-  public set addressOrigin(addressOrigin: Address) {
+  public setAddressOrigin(addressOrigin: Address) {
     this.addressOrigin = addressOrigin;
   }
 
-  public get timeStamp(): number {
+  public getTimeStamp(): number {
     return this.timeStamp;
   }
 
-  public set timeStamp(timeStamp: number) {
+  private setTimeStamp(timeStamp: number) {
     this.timeStamp = timeStamp;
   }
 
-  public get caducidad(): number {
+  public getCaducidad(): number {
     return this.caducidad;
   }
 
-  public set caducidad(caducidad: number) {
+  public setCaducidad(caducidad: number) {
     this.caducidad = caducidad;
+  }
+  /**
+   *
+   * @returns true si es valido, false si se ha pasado el tiempo
+   */
+  isTimeValid() {
+    return this.timeStamp + this.caducidad > new Date().getTime();
   }
 
   toStringDeep() {

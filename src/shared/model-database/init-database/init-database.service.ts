@@ -44,16 +44,19 @@ export class InitDatabaseService {
   }
   private createTableTransacciones() {
     this.databaseService.exectQuery(
-      `CREATE TABLE Transacciones (
-          id TEXT(256) NOT NULL,
-          cantidad INTEGER,
-          addressDestino TEXT(256) NOT NULL,
-          addressOrigen TEXT(256) NOT NULL,
-          caducidad NUMERIC NOT NULL,
-          CONSTRAINT Transacciones_PK PRIMARY KEY (id),
-          CONSTRAINT Transacciones_FK FOREIGN KEY (addressDestino) REFERENCES Address(id),
-          CONSTRAINT Transacciones_FK_1 FOREIGN KEY (addressOrigen) REFERENCES Address(id)
+      `-- Transacciones definition
+
+      CREATE TABLE Transacciones (
+        id TEXT(256) NOT NULL,
+        cantidad INTEGER,
+        addressDestino TEXT(256) NOT NULL,
+        addressOrigen TEXT(256) NOT NULL,
+        caducidad NUMERIC NOT NULL, "timestamp" INTEGER NOT NULL,
+        CONSTRAINT Transacciones_PK PRIMARY KEY (id),
+        CONSTRAINT Transacciones_FK FOREIGN KEY (addressDestino) REFERENCES Address(id),
+        CONSTRAINT Transacciones_FK_1 FOREIGN KEY (addressOrigen) REFERENCES Address(id)
       );
+      
       CREATE INDEX Transacciones_id_IDX ON Transacciones (id);
       `,
       (error) => {
