@@ -1,9 +1,13 @@
 export class Miner {
-  public get id(): string {
+  private id: string;
+  constructor(id: string) {
+    this.id = id;
+  }
+  public getId(): string {
     return this.id;
   }
 
-  public set id(id: string) {
+  public setId(id: string) {
     this.id = id;
   }
 }

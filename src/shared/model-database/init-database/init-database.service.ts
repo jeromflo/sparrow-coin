@@ -12,6 +12,9 @@ export class InitDatabaseService {
     this.createTableNode();
     this.createTableTransacciones();
     this.createTableUnionTransacciones();
+    this.createViewNodeTransactions();
+    this.createViewTransaccionesMinning();
+    this.createViewTransaccionesNotMinning();
   }
   private createTableAddres() {
     this.databaseService.exectQuery(
@@ -67,16 +70,73 @@ export class InitDatabaseService {
   }
   private createTableUnionTransacciones() {
     this.databaseService.exectQuery(
-      `CREATE TABLE Union_Transacciones (
-          id TEXT(256) NOT NULL,
-          id_transaccion TEXT(256) NOT NULL,
-          id_nodo TEXT(256) NOT NULL,
-          CONSTRAINT Union_Transacciones_PK PRIMARY KEY (id),
-          CONSTRAINT Union_Transacciones_FK FOREIGN KEY (id_nodo) REFERENCES Nodo(id),
-          CONSTRAINT Union_Transacciones_FK_1 FOREIGN KEY (id_transaccion) REFERENCES Transacciones(id)
+      `-- Union_Transacciones definition
+
+      CREATE TABLE Union_Transacciones (
+        id TEXT(256) NOT NULL,
+        id_transaccion TEXT(256) NOT NULL,
+        id_nodo TEXT(256) NOT NULL,
+        CONSTRAINT Union_Transacciones_PK PRIMARY KEY (id_transaccion),
+        CONSTRAINT Union_Transacciones_FK FOREIGN KEY (id_nodo) REFERENCES Nodo(id),
+        CONSTRAINT Union_Transacciones_FK_1 FOREIGN KEY (id_transaccion) REFERENCES Transacciones(id)
       );
-      CREATE INDEX Union_Transacciones_id_IDX ON Union_Transacciones (id,id_transaccion,id_nodo);
-      
+      `,
+      (error) => {
+        this.errorCreacionTablas('Union_Transacciones con Error: ' + error);
+      },
+    );
+  }
+  private createViewNodeTransactions() {
+    this.databaseService.exectQuery(
+      `-- viewNodeTransactions source
+
+      CREATE VIEW ViewNodeTransactions AS select
+      n.id  as id_nodo, n."timestamp" as "timestamp_node", n.minero , n.id_union_transaccion as id_union_transaccion_node,
+      t.id  as transaction_id,t.cantidad transaction_cantidad, t.addressDestino, t.caducidad, t."timestamp" as transaction_timestamp
+      from Nodo n join Union_Transacciones ut on ut.id_nodo =n.id  join Transacciones t on t.id =ut.id_transaccion ;
+      `,
+      (error) => {
+        this.errorCreacionTablas('Union_Transacciones con Error: ' + error);
+      },
+    );
+  }
+  private createViewTransaccionesNotMinning() {
+    this.databaseService.exectQuery(
+      `CREATE VIEW ViewTransaccionesNotMinning AS 
+      select t3.* 
+      from (
+      select
+      DISTINCT ut.id_transaccion , 
+      *
+        from
+        Transacciones t
+      left join Union_Transacciones ut 
+      on t.id =ut.id_transaccion  
+      where ut.id_transaccion is NULL 
+      ) t2 join Transacciones t3 where t2.id =t3.id;
+      `,
+      (error) => {
+        this.errorCreacionTablas('Union_Transacciones con Error: ' + error);
+      },
+    );
+  }
+  private createViewTransaccionesMinning() {
+    this.databaseService.exectQuery(
+      `-- ViewTransaccionesMinning source
+
+      CREATE VIEW ViewTransaccionesMinning
+      AS 
+      select t3.* 
+      from (
+      select
+      DISTINCT ut.id_transaccion , 
+      *
+        from
+        Transacciones t
+      left join Union_Transacciones ut 
+      on t.id =ut.id_transaccion  
+      where not ut.id_transaccion is NULL 
+      ) t2 join Transacciones t3 where t2.id =t3.id;
       `,
       (error) => {
         this.errorCreacionTablas('Union_Transacciones con Error: ' + error);

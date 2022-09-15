@@ -28,17 +28,28 @@ export class GetTransaccionGateway {
         error: `error the type of data is ${typeof data}, please send json`,
       });
     } else {
-      const trx = new Trx(
-        data.cant,
-        new Address(data.addressDest),
-        new Address(data.addresOrigin),
-        data.caducidad,
-      );
-      console.log(trx);
+      if (
+        data.cant &&
+        data.addressDest &&
+        data.addresOrigin &&
+        data.caducidad
+      ) {
+        const trx = new Trx(
+          data.cant,
+          new Address(data.addressDest),
+          new Address(data.addresOrigin),
+          data.caducidad,
+        );
+        console.log(trx);
 
-      if (trx.isTimeValid()) {
-        this.ormTransaccionService.insertTransacction(trx);
-        this.server.emit('transaccion', { event, data });
+        if (trx.isTimeValid()) {
+          this.ormTransaccionService.insertTransacction(trx);
+          this.server.emit('transaccion', { event, data });
+        } else {
+          client.emit('nueva_transaccion', {
+            error: `error received  ${data}, expected {cant:number, addressDest:string, addresOrigin:string, caducidad:number}`,
+          });
+        }
       } else {
         client.emit('transaccion', {
           error: `La transaccion ha caducado`,

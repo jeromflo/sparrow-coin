@@ -12,7 +12,6 @@ export class Nodo {
   constructor(miner: Miner, transacciones: Trx[], merkleTree: MerkleTreeImpl) {
     this.timeStamp = new Date().getTime();
     this.miner = miner;
-
     this.transacciones = transacciones;
     this.merkleTree = merkleTree;
     this.idHash = sha256(this.toStringDeep()).toString();
@@ -57,5 +56,14 @@ export class Nodo {
   }
   toStringDeep() {
     return JSON.stringify(this);
+  }
+  toString() {
+    return {
+      idNodo: this.getIdHash(),
+      timestamp: this.getTimeStamp(),
+      minero: this.getMiner().getId(),
+      transacciones: this.getTransacciones().toString(),
+      merkleTree: this.getMerkleTree().getLeaves(),
+    };
   }
 }

@@ -1,10 +1,13 @@
 import { DatabaseService } from './../../model-database/database/database.service';
 import { Injectable } from '@nestjs/common';
 import { Nodo } from 'src/model/node';
+import { PromiseLogic } from 'src/shared/logic/promise-logic/promise-logic';
 
 @Injectable()
-export class NodeOrmService {
-  constructor(private databaseService: DatabaseService) {}
+export class NodeOrmService extends PromiseLogic {
+  constructor(protected databaseService: DatabaseService) {
+    super();
+  }
   getAll(): Promise<any[]> {
     const sql = 'select * from Nodo';
     return this.promiseGet<any>(sql);
@@ -14,22 +17,39 @@ export class NodeOrmService {
 
     return this.promiseGet<any>(sql);
   }
+  getLastNode() {
+    const sql = `select * from Nodo n order by "timestamp" DESC limit 1;`;
+    console.log(sql);
+
+    return this.promiseGet<any>(sql);
+  }
   getByTimeStamp(timeLt, timeGt): Promise<any[]> {
     let sql = `select * from Nodo where `;
     timeGt ? (sql += `timeStamp > '${timeGt}'`) : '';
     timeLt ? (sql += `timeStamp < '${timeLt}'`) : '';
     return this.promiseGet<any>(sql);
   }
+  getMergeDataByNode(idNodo: string) {
+    const sql = `select * from ViewNodeTransactions where id_nodo like '${idNodo}'`;
 
+    return this.promiseGet<any>(sql);
+  }
+  getAllMergeData() {
+    const sql = `select * from ViewNodeTransactions `;
+
+    return this.promiseGet<any>(sql);
+  }
   getByMiner(address): Promise<any[]> {
     const sql = `select * from Nodo where minero like '${address}'`;
 
     return this.promiseGet<any>(sql);
   }
-  insertNodo(nodo: Nodo, unionTransaccion: number) {
+  insertNodo(nodo: Nodo, unionTransaccion: string) {
     const sql = `INSERT INTO Nodo
     (id, "timestamp", id_union_transaccion, minero)
-    VALUES('${nodo.getIdHash()}', ${nodo.getTimeStamp()}, 0, '${nodo.getMiner()}');
+    VALUES('${nodo.getIdHash()}', ${nodo.getTimeStamp()}, '${unionTransaccion}', '${nodo
+      .getMiner()
+      .getId()}');
    `;
     return this.promiseOthers<any>(sql);
   }
@@ -46,25 +66,5 @@ export class NodeOrmService {
       `;
 
     return this.promiseOthers<any>(sql);
-  }
-  promiseGet<T>(sql) {
-    return new Promise<T>((resolve, reject) => {
-      this.databaseService.getExectQuery(sql, (err, res, ...arg) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  }
-  promiseOthers<T>(sql) {
-    return new Promise<T>((resolve, reject) => {
-      this.databaseService.exectQuery(sql, (err, res, ...arg) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
   }
 }

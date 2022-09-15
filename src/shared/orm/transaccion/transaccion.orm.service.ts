@@ -1,10 +1,13 @@
+import { PromiseLogic } from 'src/shared/logic/promise-logic/promise-logic';
 import { DatabaseService } from '../../model-database/database/database.service';
 import { Injectable } from '@nestjs/common';
 import { ITrx } from 'src/interfaces/trx.interface';
 
 @Injectable()
-export class TransaccionORMService {
-  constructor(private databaseService: DatabaseService) {}
+export class TransaccionORMService extends PromiseLogic {
+  constructor(protected databaseService: DatabaseService) {
+    super();
+  }
   getAll(): Promise<any[]> {
     const sql = 'select * from Transacciones';
     return this.promiseGet<any>(sql);
@@ -22,6 +25,15 @@ export class TransaccionORMService {
   }
   getByAddressDestino(address): Promise<any[]> {
     const sql = `select * from Transacciones where addressDestino like '${address}'`;
+
+    return this.promiseGet<any>(sql);
+  }
+  getByArraysIdNotMinning(ids: string[]): Promise<any[]> {
+    let sql = `select * from ViewTransaccionesNotMinning vtm where vtm.id in (`;
+    ids.forEach((id, index) => {
+      sql += index < ids.length - 1 ? `'${id}',` : `'${id}')`;
+    });
+    console.log(sql);
 
     return this.promiseGet<any>(sql);
   }
@@ -52,25 +64,5 @@ export class TransaccionORMService {
     `;
 
     return this.promiseOthers<any>(sql);
-  }
-  promiseGet<T>(sql) {
-    return new Promise<T>((resolve, reject) => {
-      this.databaseService.getExectQuery(sql, (err, res, ...arg) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  }
-  promiseOthers<T>(sql) {
-    return new Promise<T>((resolve, reject) => {
-      this.databaseService.exectQuery(sql, (err, res, ...arg) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
   }
 }
