@@ -1,19 +1,19 @@
 import { ITrx } from 'src/interfaces/trx.interface';
 import { IAddress } from './../interfaces/address.interface';
 import { Address } from './address';
-import sha256 from 'crypto-js/sha256';
+import sha256 = require('crypto-js/sha256');
 
 export class Trx implements ITrx {
   private id: string;
   private cant: number;
-  private addressDest: IAddress;
-  private addressOrigin: IAddress;
+  private addressDest: Address;
+  private addressOrigin: Address;
   private caducidad: number;
   private timeStamp: number;
   constructor(
     cant: number,
-    addressDest: IAddress,
-    addressOrigin: IAddress,
+    addressDest: Address,
+    addressOrigin: Address,
     caducida: number,
   ) {
     this.cant = cant;
@@ -21,17 +21,10 @@ export class Trx implements ITrx {
     this.addressOrigin = addressOrigin;
     this.caducidad = caducida;
     this.timeStamp = new Date().getTime();
-    console.log(this);
-
-    /*     this.id = sha256(JSON.stringify(this)).toString();
-     */
+    this.id = sha256(this.toStringDeep()).toString();
   }
   public getId(): string {
     return this.id;
-  }
-
-  private setId(id: string) {
-    this.id = id;
   }
 
   public getCant(): number {
@@ -86,5 +79,9 @@ export class Trx implements ITrx {
   }
   toString() {
     return `{id:${this.id},cant:${this.cant},\n addressDest:${this.addressDest},\n addressOrigin:${this.addressOrigin}\n,caducidad:${this.caducidad}}`;
+  }
+  setTrx(id: string, timeStamp: number) {
+    this.id = id;
+    this.timeStamp = timeStamp;
   }
 }

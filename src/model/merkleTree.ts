@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
 import { MerkleTree } from 'merkletreejs';
-import SHA256 from 'crypto-js/sha256';
+import sha256 = require('crypto-js/sha256');
 
 export class MerkleTreeImpl {
-  private leaves: [];
+  private leaves: any[];
   private tree: MerkleTree;
   private root: string;
 
-  public getLeaves(): [] {
+  public getLeaves(): any[] {
     return this.leaves;
   }
 
@@ -15,16 +14,16 @@ export class MerkleTreeImpl {
     this.leaves = leaves;
   }
 
-  createMerkleTree(leaves?: []) {
+  createMerkleTree(leaves?: any[]) {
     if (leaves) {
       this.leaves = leaves;
     }
-    this.tree = new MerkleTree(this.leaves, SHA256);
+    this.tree = new MerkleTree(this.leaves, sha256);
     this.root = this.tree.getRoot().toString('hex');
   }
 
   verificaLeaf(leaf: string): boolean {
-    const leaf256 = SHA256(leaf);
+    const leaf256 = sha256(leaf);
     const proof = this.tree.getProof(leaf256);
     return this.tree.verify(proof, leaf, this.root);
   }

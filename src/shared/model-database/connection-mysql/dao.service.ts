@@ -11,7 +11,7 @@ export class DaoService {
     if (!this.instanceDb) {
       try {
         this.instanceDb = new sqlite3.Database(
-          'src/shared/model-database/database/sql.desa.db',
+          'src/shared/model-database/connection-mysql/sql.desa.db',
         );
       } catch (exception) {
         console.log('Excepcion encontrada al setear la database', exception);

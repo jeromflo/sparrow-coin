@@ -1,3 +1,4 @@
 export interface IAddress {
-  publickKey: string;
+  getPublickKey(): string;
+  setPublickKey(publickKey: string): void;
 }

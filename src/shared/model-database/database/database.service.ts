@@ -1,23 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import * as sqlite3 from 'sqlite3';
 import { DaoService } from '../connection-mysql/dao.service';
 
 @Injectable()
 export class DatabaseService {
-  private db = this.dao.getIstanceDB();
+  private db: sqlite3.Database = this.dao.getIstanceDB();
   constructor(private dao: DaoService) {
     //= DaoService.createInstance()
   }
-
+  onModuleDestroy() {
+    this.closeConnection();
+  }
   exectQuery(
     cadena: string,
     callback: (resolve?, reject?, ...arg) => void,
   ): void {
-    console.log(this.db);
-
     this.db.serialize(() => {
-      this.db.run(cadena, callback);
+      this.db.exec(cadena, callback);
     });
-    this.closeConnection();
+  }
+  getExectQuery(
+    cadena: string,
+    callback: (reject?, resolve?, ...arg) => void,
+  ): void {
+    this.db.serialize(() => {
+      this.db.all(cadena, callback);
+    });
   }
   closeConnection() {
     this.db.close();

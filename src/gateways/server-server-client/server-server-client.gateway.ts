@@ -17,11 +17,11 @@ export class ServerServerClientGateway {
    * @param client
    * @returns
    */
-  @SubscribeMessage('server-client')
+  /* @SubscribeMessage('server-client')
   serverClientSocket(
     @MessageBody() payload: string,
     @ConnectedSocket() client: Socket,
-  ): string {
+  ) {
     client.write('recibido');
     console.log(payload);
     console.log({ http: client.client });
@@ -34,7 +34,7 @@ export class ServerServerClientGateway {
 
     client.emit('evento', { name: 'server-client' });
     return 'change de world!';
-  }
+  } */
   @SubscribeMessage('events')
   handleEvent(@MessageBody() data: unknown, @ConnectedSocket() client: Socket) {
     const event = 'events';

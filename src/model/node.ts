@@ -1,23 +1,21 @@
 import { Miner } from './miner';
 import { MerkleTreeImpl } from './merkleTree';
 import { Trx } from './trx';
+import sha256 = require('crypto-js/sha256');
+
 export class Nodo {
   private miner: Miner;
   private timeStamp: number;
   private idHash: string;
   private transacciones: Trx[];
   private merkleTree: MerkleTreeImpl;
-  constructor(
-    miner: Miner,
-    idHash: string,
-    transacciones: Trx[],
-    merkleTree: MerkleTreeImpl,
-  ) {
+  constructor(miner: Miner, transacciones: Trx[], merkleTree: MerkleTreeImpl) {
     this.timeStamp = new Date().getTime();
     this.miner = miner;
-    this.idHash = idHash;
+
     this.transacciones = transacciones;
     this.merkleTree = merkleTree;
+    this.idHash = sha256(this.toStringDeep()).toString();
   }
   public getMiner(): Miner {
     return this.miner;
@@ -56,5 +54,8 @@ export class Nodo {
 
   public setMerkleTree(merkleTree: MerkleTreeImpl): void {
     this.merkleTree = merkleTree;
+  }
+  toStringDeep() {
+    return JSON.stringify(this);
   }
 }

@@ -26,16 +26,17 @@ export class InitDatabaseService {
   }
   private createTableNode() {
     this.databaseService.exectQuery(
-      `CREATE TABLE Nodo (
-          id TEXT(256) NOT NULL,
-          "timestamp" INTEGER,
-          id_union_transaccion INTEGER NOT NULL,
-          minero TEXT(256) NOT NULL,
-          CONSTRAINT Nodo_PK PRIMARY KEY (id),
-          CONSTRAINT Nodo_FK FOREIGN KEY (minero) REFERENCES Address(id)
+      `-- Nodo definition
+
+      CREATE TABLE Nodo (
+        id TEXT(256) NOT NULL,
+        "timestamp" INTEGER,
+        minero TEXT(256) NOT NULL,
+        id_union_transaccion TEXT(256) NOT NULL,
+        CONSTRAINT Nodo_PK PRIMARY KEY (id),
+        CONSTRAINT Nodo_FK FOREIGN KEY (id_union_transaccion) REFERENCES Union_Transacciones(id),
+        CONSTRAINT Nodo_FK_1 FOREIGN KEY (minero) REFERENCES Address(id)
       );
-      CREATE INDEX Nodo_id_IDX ON Nodo (id);
-      
       `,
       (error) => {
         this.errorCreacionTablas('Nodo con Error: ' + error);
