@@ -7,7 +7,7 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-@WebSocketGateway(15500)
+@WebSocketGateway(15500, { cors: true })
 export class ClientFrontGateway {
   @WebSocketServer()
   server: Socket;

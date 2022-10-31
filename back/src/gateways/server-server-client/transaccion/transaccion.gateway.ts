@@ -10,7 +10,7 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-@WebSocketGateway(15600)
+@WebSocketGateway(15600, { cors: true })
 export class GetTransaccionGateway {
   @WebSocketServer()
   server: Socket;

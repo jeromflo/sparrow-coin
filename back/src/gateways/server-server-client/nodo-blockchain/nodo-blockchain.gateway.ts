@@ -19,7 +19,7 @@ import { Miner } from 'src/model/miner';
 export type transacction = {
   id: string;
 };
-@WebSocketGateway(15600)
+@WebSocketGateway(15600, { cors: true })
 export class NodoBlockchainGateway {
   @WebSocketServer()
   server: Socket;
