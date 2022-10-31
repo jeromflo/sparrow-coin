@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SocketClientService } from 'src/app/shared/services/services/socket-client.service';
+import { SocketClientService } from 'src/app/shared/services/socketClient/socket-client.service';
 
 @Component({
   selector: 'app-principal',
