@@ -1,7 +1,9 @@
+import { Subject } from 'rxjs';
+
 export interface IEnvironment {
   production: boolean;
   UrlSocket: string;
-  portSocket: string;
+  portSocket: number;
   events: {
     emits: {
       transacciones: {
@@ -26,17 +28,17 @@ export interface IEnvironment {
     };
     listen: {
       transacciones: {
-        transacciones: string;
+        transacciones: string | Subject<any>;
       };
       nodo: {
-        get_nodo: string;
-        nuevoNodo: string;
+        get_nodo: string | Subject<any>;
+        nuevoNodo: string | Subject<any>;
       };
       verificarDatabase: {
-        verificarMiDatabase: string;
+        verificarMiDatabase: string | Subject<any>;
       };
       sincronizarCadena: {
-        sincronizar: string;
+        sincronizar: string | Subject<any>;
       };
     };
   };

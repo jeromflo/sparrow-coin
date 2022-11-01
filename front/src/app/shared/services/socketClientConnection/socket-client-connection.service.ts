@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
-import * as socket from 'socket.io-client';
+import { fromEvent } from 'rxjs';
+import { io } from 'socket.io-client';
+import { AppModule } from 'src/app/app.module';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: AppModule,
 })
 export class SocketClientConnectionService {
-  private socket: socket.Socket;
+  private socket: any;
+  private url: string = environment.UrlSocket;
+  private port: number = environment.portSocket;
   constructor() {
-    this.socket = socket.io('localhost:15600');
+    this.socket = io(`${this.url}:${this.port}`);
+    this.socket.on('connect', console.log);
     this.socket.connect();
   }
-  getSocket(): socket.Socket {
+  getSocket() {
     return this.socket;
   }
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    this.socket.disconnect();
+    /*     this.socket.disconnect();
+     */
   }
 }

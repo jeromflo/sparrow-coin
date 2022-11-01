@@ -1,2 +1,9 @@
-<p>principal works!</p>
-<app-empty-component></app-empty-component>
+<ng-container *ngIf="data$|async as data; else loading">
+  {{data|json}}
+</ng-container>
+
+<ng-template #loading>
+
+  <app-empty-component></app-empty-component>
+</ng-template>
+<button (click)="clicked()">Click</button>

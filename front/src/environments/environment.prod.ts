@@ -3,7 +3,7 @@ import { IEnvironment } from 'src/app/shared/interfaces/comunes/environment.inte
 export const environment: IEnvironment = {
   production: true,
   UrlSocket: 'localhost',
-  portSocket: '15600',
+  portSocket: 15600,
   events: {
     emits: {
       transacciones: {

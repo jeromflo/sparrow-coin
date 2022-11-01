@@ -6,7 +6,7 @@ import { IEnvironment } from 'src/app/shared/interfaces/comunes/environment.inte
 
 export const environment: IEnvironment = {
   UrlSocket: 'localhost',
-  portSocket: '15600',
+  portSocket: 15600,
   production: false,
   events: {
     emits: {
