@@ -1,0 +1,46 @@
+<button class="mb-2 bg-blue-200 border rounded-lg hover:bg-blue-500 hover:text-white pl-2 w-full flex justify-center "
+  (click)="drop=!drop">
+  <p>
+
+    Mostrar Transacciones
+  </p>
+  <div class="justify-self-end">
+
+    <svg *ngIf="!drop" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+    <svg *ngIf="drop" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+
+  </div>
+
+</button>
+<ng-container *ngIf="data&&drop">
+
+  <p-table [@showTrigger]="'animate'" [value]="data" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">id</th>
+        <th pSortableColumn="cantidad">cantidad</th>
+        <th pSortableColumn="address Destino">address Destino</th>
+        <th pSortableColumn="address Origen">address Origen</th>
+        <th pSortableColumn="caducidad">caducidad</th>
+        <th pSortableColumn="timestamp">timestamp</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{product.id}}</td>
+        <td>{{product.cantidad}}</td>
+        <td>{{product.addressDestino}}</td>
+        <td>{{product.addressOrigen}}</td>
+        <td>{{product.caducidad}}</td>
+        <td>{{product.timestamp}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</ng-container>

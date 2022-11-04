@@ -39,7 +39,6 @@ export class SocketClientService {
     });
   }
   getObservable(path: string[]) {
-    console.log(this.subjects);
     let subject: any = this.subjects;
     path.forEach((el) => {
       subject = subject[el];

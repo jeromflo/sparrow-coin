@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalComponent } from './principal.component';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { TablePrincipalComponent } from 'src/app/core/components/sections/principal/table-principal/table-principal.component';
 
 @NgModule({
-  declarations: [PrincipalComponent],
+  declarations: [PrincipalComponent, TablePrincipalComponent],
   providers: [],
   imports: [CommonModule, PrincipalRoutingModule, ComponentsModule],
 })

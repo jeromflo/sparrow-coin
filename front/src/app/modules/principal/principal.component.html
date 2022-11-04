@@ -1,9 +1,9 @@
 <ng-container *ngIf="data$|async as data; else loading">
-  {{data|json}}
+
+  <app-table-principal [data]="data?.value"></app-table-principal>
 </ng-container>
 
 <ng-template #loading>
 
   <app-empty-component></app-empty-component>
 </ng-template>
-<button (click)="clicked()">Click</button>
