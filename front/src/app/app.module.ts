@@ -8,6 +8,8 @@ import { LayoutsModule } from './layouts/layouts.module';
 import { ComponentsModule } from './core/components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { ReduxModule } from './shared/redux/redux.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,8 +19,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     AppRoutingModule,
     LayoutsModule,
     ComponentsModule,
-    FormsModule,
-    ReactiveFormsModule,
+    ReduxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

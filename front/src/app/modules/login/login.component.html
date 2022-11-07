@@ -1,1 +1,25 @@
-<p>login works!</p>
+<form (ngSubmit)="submitData($event) ">
+
+  <div class=" grid grid-rows-2  justify-end ">
+    <label for="">Tamaño de la key</label>
+    <select class="bg-slate-200 " [(ngModel)]="numberKeys" name="numberKeys" (ngModelChange)="createArray()">
+      <option [defaultSelected]="true" [value]="9">9</option>
+      <option [value]="12">12</option>
+      <option [value]="24">24</option>
+    </select>
+  </div>
+  <ng-container [formGroup]="formsGroup">
+
+
+    <div [@listAnimation]="this.numberKeys" class="grid grid-cols-3 gap-4" formArrayName="formsArray">
+      <div *ngFor="let item of  formsArray.controls;let index=index" class=" grid grid-rows-2  ">
+        <label for="">key {{index+1}}</label>
+        <input class="border focus:bg-white  bg-slate-200 " type="`text" min="0 " [formControlName]="index" />
+      </div>
+    </div>
+    <div class="flex justify-end mt-4">
+
+      <input type="submit" class="btn button-blue w-1/6 " value="Aceptar">
+    </div>
+  </ng-container>
+</form>

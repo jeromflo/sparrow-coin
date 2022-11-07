@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 
 export interface IEnvironment {
+  keysLogin: string[];
   production: boolean;
   UrlSocket: string;
   portSocket: number;

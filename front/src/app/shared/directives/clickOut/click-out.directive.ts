@@ -8,7 +8,9 @@ export class ClickOutDirective {
     /*     console.log(data);
      */
     let target: Element = data.target as Element;
-    if (!target.closest('nav')) this.appClickOut.emit(true);
+    if (!target.closest('nav')) {
+      this.appClickOut.emit(false);
+    }
   }
   @Output() appClickOut = new EventEmitter();
   constructor() {}

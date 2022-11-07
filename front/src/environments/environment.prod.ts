@@ -1,6 +1,7 @@
 import { IEnvironment } from 'src/app/shared/interfaces/comunes/environment.interface';
 
 export const environment: IEnvironment = {
+  keysLogin: [],
   production: true,
   UrlSocket: 'localhost',
   portSocket: 15600,

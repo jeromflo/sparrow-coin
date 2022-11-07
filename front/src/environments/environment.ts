@@ -5,6 +5,20 @@
 import { IEnvironment } from 'src/app/shared/interfaces/comunes/environment.interface';
 
 export const environment: IEnvironment = {
+  keysLogin: [
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'aux',
+    'Fin',
+  ],
   UrlSocket: 'localhost',
   portSocket: 15600,
   production: false,

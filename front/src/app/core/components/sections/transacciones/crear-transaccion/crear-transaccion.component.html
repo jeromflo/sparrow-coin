@@ -1,23 +1,23 @@
-<form formGroupName="forms" (ngSubmit)="submitData($event);$event.preventDefault()">
-
+<form (ngSubmit)="submitData($event) " [formGroup]="forms">
+  <!--  -->
   <div class="grid grid-cols-3 gap-4">
 
     <div class=" grid grid-rows-2  ">
       <label for="">Cantidad</label>
-      <input class="border hover:border-2 bg-slate-300 " type="number" min="0" formControlName="cant" />
+      <input class="border hover:border-2 bg-slate-200 " type="number" min="0" formControlName="cant" />
     </div>
     <div class=" grid grid-rows-2">
       <label for="">Direccion Destino</label>
-      <input class="border hover:border-2 bg-slate-300 " type="number" min="0" formControlName="cant" />
+      <input class="border hover:border-2 bg-slate-200 " type="number" min="0" formControlName="addresDest" />
     </div>
     <div class=" grid grid-rows-2">
       <label for="">Caducidad</label>
-      <input class="border hover:border-2 bg-slate-300 " type="number" min="0" formControlName="cant" />
+      <input class="border hover:border-2 bg-slate-200 " type="number" min="0" formControlName="caducidad" />
     </div>
   </div>
   <div class="flex justify-end mt-4">
 
-    <input type="submit" class="btn button-blue w-1/4 " value="Aceptar">
+    <input type="submit" class="btn button-blue w-1/6 " value="Aceptar">
   </div>
 </form>
 <!-- formControlName="city" -->

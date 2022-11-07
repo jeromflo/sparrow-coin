@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginGuard } from './shared/guards/login/login.guard';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       import('./modules/create-transaccions/create-transaccions.module').then(
         (m) => m.CreateTransaccionsModule
       ),
+    canLoad: [LoginGuard],
   },
 
   {
