@@ -20,7 +20,8 @@
 </button>
 <ng-container *ngIf="data&&drop">
 
-  <p-table [@showTrigger]="'animate'" [value]="data" responsiveLayout="scroll">
+  <p-table [@showTrigger]="'animate'" [paginator]="true" [rows]="10" styleClass="p-datatable-striped" [value]="data"
+    responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="id">id</th>
