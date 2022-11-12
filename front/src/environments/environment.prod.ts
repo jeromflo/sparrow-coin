@@ -30,6 +30,7 @@ export const environment: IEnvironment = {
     listen: {
       transacciones: {
         transacciones: 'transacciones',
+        nueva_transaccion: 'nueva_transaccion',
       },
       nodo: {
         get_nodo: 'get_nodo',

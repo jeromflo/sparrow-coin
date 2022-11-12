@@ -13,7 +13,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       logOnly: environment.production,
     }),
 
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}),
     ComunModule,
   ],
 })

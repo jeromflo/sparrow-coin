@@ -29,7 +29,7 @@ export const environment: IEnvironment = {
         getTransaccionID: 'getTransactionById',
         getTransaccionOrigin: 'getTransaccionesByOrigin',
         getTransaccionDestino: 'getTransaccionesByDestino',
-        crearTransaccion: 'create_transaccion',
+        crearTransaccion: 'create-transaccion',
       },
       nodo: {
         getNodos: 'get_nodos',
@@ -47,6 +47,7 @@ export const environment: IEnvironment = {
     listen: {
       transacciones: {
         transacciones: 'transacciones',
+        nueva_transaccion: 'nueva_transaccion',
       },
       nodo: {
         get_nodo: 'get_nodo',

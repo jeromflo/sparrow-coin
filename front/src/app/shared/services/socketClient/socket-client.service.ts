@@ -12,6 +12,7 @@ export class SocketClientService {
   private subjects: IEnvironment['events']['listen'] = {
     transacciones: {
       transacciones: new Subject(),
+      nueva_transaccion: new Subject(),
     },
     nodo: {
       get_nodo: new Subject(),

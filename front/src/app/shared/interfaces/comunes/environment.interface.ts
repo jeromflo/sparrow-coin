@@ -30,6 +30,7 @@ export interface IEnvironment {
     listen: {
       transacciones: {
         transacciones: string | Subject<any>;
+        nueva_transaccion: string | Subject<any>;
       };
       nodo: {
         get_nodo: string | Subject<any>;

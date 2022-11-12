@@ -16,7 +16,7 @@ export const fadeAnimation = trigger('fadeAnimation', [
   ]),
 ]);
 
-export const fadeAnimation2 = trigger('fadeAnimation', [
+export const fadeAnimation2 = trigger('showTrigger', [
   state(
     'animate',
     style({

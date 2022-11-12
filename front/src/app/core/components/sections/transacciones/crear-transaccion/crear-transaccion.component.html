@@ -3,16 +3,19 @@
   <div class="grid grid-cols-3 gap-4">
 
     <div class=" grid grid-rows-2  ">
-      <label for="">Cantidad</label>
-      <input class="border hover:border-2 bg-slate-200 " type="number" min="0" formControlName="cant" />
+      <label [@showTrigger]="'animate'" *ngIf="cant.valid" for="">Cantidad</label>
+      <input class="border hover:border-2 bg-slate-200 invalid-form" type="number" min="0" formControlName="cant"
+        placeholder="Cantidad" required />
     </div>
     <div class=" grid grid-rows-2">
-      <label for="">Direccion Destino</label>
-      <input class="border hover:border-2 bg-slate-200 " type="number" min="0" formControlName="addresDest" />
+      <label [@showTrigger]="'animate'" *ngIf="addressDest.valid" for="">Direccion Destino</label>
+      <input class="border hover:border-2 bg-slate-200 invalid-form" type="number" min="0" formControlName="addresDest"
+        placeholder="Direccion Destino" required />
     </div>
     <div class=" grid grid-rows-2">
-      <label for="">Caducidad</label>
-      <input class="border hover:border-2 bg-slate-200 " type="number" min="0" formControlName="caducidad" />
+      <label [@showTrigger]="'animate'" *ngIf="cad.valid" for="">Caducidad</label>
+      <input class="border hover:border-2 bg-slate-200 invalid-form" type="date" min="0" formControlName="caducidad"
+        placeholder="Caducidad" required />
     </div>
   </div>
   <div class="flex justify-end mt-4">

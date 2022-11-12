@@ -29,6 +29,8 @@ import { ITransaccion } from 'src/app/shared/interfaces/transaccion.interfaces';
 export class TableTransaccionesComponent implements OnInit {
   @Input() data: ITransaccion[] | undefined;
   drop = false;
+  desactiveDatePipeCaducidad = false;
+  desactiveDatePipeTimeStamp = false;
   constructor() {}
 
   ngOnInit(): void {}

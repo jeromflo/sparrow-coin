@@ -33,13 +33,46 @@
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr>
-        <td>{{product.id}}</td>
-        <td>{{product.cantidad}}</td>
-        <td>{{product.addressDestino}}</td>
-        <td>{{product.addressOrigen}}</td>
-        <td>{{product.caducidad}}</td>
-        <td>{{product.timestamp}}</td>
+        <td class="align-middle	">{{product.id}}</td>
+        <td class="align-middle	">{{product.cantidad}}</td>
+        <td class="align-middle	">{{product.addressDestino}}</td>
+        <td class="align-middle	">{{product.addressOrigen}}</td>
+        <td class="align-middle	">
+          <ng-container *ngIf="desactiveDatePipeCaducidad;else date">
+            {{product.caducidad|datePipe }}
+          </ng-container>
+
+          <ng-template #date>
+            {{product.caducidad }}
+          </ng-template>
+          <button (click)="desactiveDatePipeCaducidad=!desactiveDatePipeCaducidad">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+            </svg>
+          </button>
+        </td>
+        <td class="align-middle	">
+          <ng-container *ngIf="desactiveDatePipeTimeStamp;else date">
+            {{product.timestamp|datePipe }}
+          </ng-container>
+
+          <ng-template #date>
+            {{product.timestamp }}
+          </ng-template>
+          <button (click)="desactiveDatePipeTimeStamp=!desactiveDatePipeTimeStamp">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+            </svg>
+          </button>
+
+
+        </td>
       </tr>
+
     </ng-template>
   </p-table>
 

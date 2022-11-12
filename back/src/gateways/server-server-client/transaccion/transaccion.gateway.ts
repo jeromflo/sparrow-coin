@@ -46,7 +46,7 @@ export class GetTransaccionGateway {
           this.ormTransaccionService.insertTransacction(trx);
           this.server.emit('transaccion', { event, data });
         } else {
-          client.emit('nueva_transaccion', {
+          client.emit('transaccion', {
             error: `error received  ${data}, expected {cant:number, addressDest:string, addresOrigin:string, caducidad:number}`,
           });
         }
