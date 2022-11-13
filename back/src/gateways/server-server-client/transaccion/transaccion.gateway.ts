@@ -45,6 +45,7 @@ export class GetTransaccionGateway {
         if (trx.isTimeValid()) {
           this.ormTransaccionService.insertTransacction(trx);
           this.server.emit('transaccion', { event, data });
+          this.getTransacciones(data, client);
         } else {
           client.emit('transaccion', {
             error: `error received  ${data}, expected {cant:number, addressDest:string, addresOrigin:string, caducidad:number}`,
@@ -69,12 +70,6 @@ export class GetTransaccionGateway {
         error: `error the type of data is ${typeof data}, please send json`,
       });
     } else {
-      /*   const trx = new Trx(
-        data.cant,
-        new Address(data.addressDest),
-        new Address(data.addresOrigin),
-        data.caducidad,
-      ); */
       if (data.id) {
         this.ormTransaccionService.getById(data?.id).then((value) => {
           client.emit('transaccion-by-id', { event, value });

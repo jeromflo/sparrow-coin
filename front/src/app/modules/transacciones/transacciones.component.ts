@@ -11,14 +11,21 @@ export class TransaccionesComponent implements OnInit {
   public data$: Observable<any> | undefined;
 
   constructor(private socketService: SocketClientService) {
-    this.socketService.getOn(['transacciones', 'transacciones']);
+    const pathNuevaTransaccion = ['transacciones', 'transaccion'];
+    const pathTransacciones = ['transacciones', 'transacciones'];
+
+    this.socketService.getOn(pathNuevaTransaccion);
+    this.socketService.getOn(pathTransacciones);
+    this.socketService.getObservable(pathTransacciones).subscribe(console.log);
+    this.socketService.getObservable(pathNuevaTransaccion).subscribe((data) => {
+      this.socketService.emitSocket(
+        environment.events.emits.transacciones.getTransacciones
+      );
+    });
+    this.data$ = this.socketService.getObservable(pathTransacciones);
     this.socketService.emitSocket(
       environment.events.emits.transacciones.getTransacciones
     );
-    this.data$ = this.socketService.getObservable([
-      'transacciones',
-      'transacciones',
-    ]);
   }
 
   ngOnInit(): void {}

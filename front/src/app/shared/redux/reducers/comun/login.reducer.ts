@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
-import * as actions from '../../actions/loging.actions';
+import * as actions from '../../actions/comun/loging.actions';
 
 export const initialState = environment.keysLogin;
 const featureReducer = createReducer(

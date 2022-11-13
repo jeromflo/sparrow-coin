@@ -11,6 +11,7 @@ import { SocketClientConnectionService } from '../socketClientConnection/socket-
 export class SocketClientService {
   private subjects: IEnvironment['events']['listen'] = {
     transacciones: {
+      transaccion: new Subject(),
       transacciones: new Subject(),
       nueva_transaccion: new Subject(),
     },

@@ -33,6 +33,12 @@ const routes: Routes = [
   },
   { path: '', pathMatch: 'full', redirectTo: 'principal' },
   {
+    path: 'mineria',
+    loadChildren: () =>
+      import('./modules/mineria/mineria.module').then((m) => m.MineriaModule),
+    canLoad: [LoginGuard],
+  },
+  {
     path: '**',
     loadChildren: () =>
       import('./modules/unknow-page/unknow-page.module').then(

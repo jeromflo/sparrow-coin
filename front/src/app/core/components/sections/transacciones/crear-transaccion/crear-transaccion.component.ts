@@ -9,6 +9,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { fadeAnimation2 } from 'src/app/shared/animations/fadeAnimation.animations';
+import { setAlert } from 'src/app/shared/redux/actions/comun/alerts.actions';
 import { SocketClientService } from 'src/app/shared/services/socketClient/socket-client.service';
 import { environment } from 'src/environments/environment';
 
@@ -45,15 +46,29 @@ export class CrearTransaccionComponent implements OnInit {
       this.myAddress = data.toString().hashCode();
     });
     this.forms = this.fb.group({
-      cant: ['1', [Validators.min(0)]],
+      cant: ['', [Validators.min(0)]],
+      addresDest: [''],
+      caducidad: [''],
+      /* cant: ['1', [Validators.min(0)]],
       addresDest: ['2311'],
-      caducidad: ['2022-11-12'],
+      caducidad: ['2022-11-12'], */
     });
     const pathNuevaTransaccion = ['transacciones', 'transacciones'];
     this.socketService.getOn(pathNuevaTransaccion);
     this.socketService
       .getObservable(pathNuevaTransaccion)
-      .subscribe(console.log);
+      .subscribe((data: any) => {
+        this.store.dispatch(
+          setAlert({
+            value: {
+              menssage: 'Transaccion creada',
+              title: 'Transaccion',
+              icon: 'success',
+              timer: 2000,
+            },
+          })
+        );
+      });
   }
 
   ngOnInit(): void {}
@@ -69,15 +84,26 @@ export class CrearTransaccionComponent implements OnInit {
       values.caducidad = (new Date().getTime() + 600000).toString(); //	600000  son 10minutos
     }
     const body = {
-      cant: values.cant,
-      addressDest: values.addresDest,
-      addresOrigin: this.myAddress,
-      caducidad: values.caducidad,
+      cant: parseInt(values.cant?.toString() || '0'),
+      addressDest: parseInt(values.addresDest?.toString() || '0'),
+      addresOrigin: Math.abs(this.myAddress),
+      caducidad: new Date(values.caducidad).getTime(),
     };
-
-    this.socketService.emitSocket(
-      environment.events.emits.transacciones.crearTransaccion,
-      body
+    this.store.dispatch(
+      setAlert({
+        value: {
+          menssage: 'Transaccion enviada',
+          icon: 'warning',
+          title: 'Transaccion',
+          timer: 2000,
+        },
+      })
     );
+    setTimeout(() => {
+      this.socketService.emitSocket(
+        environment.events.emits.transacciones.crearTransaccion,
+        body
+      );
+    }, 2000);
   }
 }

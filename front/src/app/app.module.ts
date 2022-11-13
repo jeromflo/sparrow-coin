@@ -9,6 +9,7 @@ import { ComponentsModule } from './core/components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ReduxModule } from './shared/redux/redux.module';
+import { ComponentsModuleShared } from './shared/components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { ReduxModule } from './shared/redux/redux.module';
     LayoutsModule,
     ComponentsModule,
     ReduxModule,
+    ComponentsModuleShared,
   ],
   providers: [],
   bootstrap: [AppComponent],

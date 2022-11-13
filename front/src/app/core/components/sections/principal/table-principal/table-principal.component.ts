@@ -28,7 +28,7 @@ import { INodo } from 'src/app/shared/interfaces/nodos';
 })
 export class TablePrincipalComponent {
   @Input() data: INodo[] | undefined;
-  drop = false;
+  drop = true;
   constructor() {}
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.

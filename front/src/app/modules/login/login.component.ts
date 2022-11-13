@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, tap } from 'rxjs';
 import { listAnimation } from 'src/app/shared/animations/listAnimations.animations';
-import { setKeys } from 'src/app/shared/redux/actions/loging.actions';
+import { setKeys } from 'src/app/shared/redux/actions/comun/loging.actions';
 
 @Component({
   selector: 'app-login',
