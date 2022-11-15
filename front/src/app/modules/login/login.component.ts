@@ -20,7 +20,7 @@ import { setKeys } from 'src/app/shared/redux/actions/comun/loging.actions';
 export class LoginComponent {
   numberKeys = '9';
   formsGroup;
-  private hashLogin = 0;
+  private hashLogin: string = '0000';
   constructor(
     private fb: FormBuilder,
     private route: Router,

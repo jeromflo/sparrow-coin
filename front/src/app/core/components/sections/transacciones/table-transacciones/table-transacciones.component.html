@@ -1,5 +1,4 @@
-<button class="mb-2 bg-blue-200 border rounded-lg hover:bg-blue-500 hover:text-white pl-2 w-full flex justify-center "
-  (click)="drop=!drop">
+<button class="mb-2 btn button-blue   flex justify-center " (click)="drop=!drop">
   <p>
 
     Mostrar Transacciones
@@ -24,57 +23,44 @@
     responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="id">id</th>
-        <th pSortableColumn="cantidad">cantidad</th>
-        <th pSortableColumn="address Destino">address Destino</th>
-        <th pSortableColumn="address Origen">address Origen</th>
-        <th pSortableColumn="caducidad">caducidad</th>
-        <th pSortableColumn="timestamp">timestamp</th>
+        <th *ngIf="seleccionar">Seleccionar</th>
+        <th pSortableColumn="id">id <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="cantidad">cantidad<p-sortIcon field="cantidad"></p-sortIcon>
+        </th>
+        <th pSortableColumn="addressDestino">address Destino<p-sortIcon field="addressDestino"></p-sortIcon>
+        </th>
+        <th pSortableColumn="addressOrigen">address Origen<p-sortIcon field="addressOrigen"></p-sortIcon>
+        </th>
+        <th pSortableColumn="caducidad">caducidad<p-sortIcon field="caducidad"></p-sortIcon>
+        </th>
+        <th pSortableColumn="timestamp">timestamp<p-sortIcon field="timestamp"></p-sortIcon>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr>
-        <td class="align-middle	">{{product.id}}</td>
-        <td class="align-middle	">{{product.cantidad}}</td>
-        <td class="align-middle	">{{product.addressDestino}}</td>
-        <td class="align-middle	">{{product.addressOrigen}}</td>
-        <td class="align-middle	">
-          <ng-container *ngIf="desactiveDatePipeCaducidad;else date">
-            {{product.caducidad|datePipe }}
-          </ng-container>
-
-          <ng-template #date>
-            {{product.caducidad }}
-          </ng-template>
-          <button (click)="desactiveDatePipeCaducidad=!desactiveDatePipeCaducidad">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-            </svg>
-          </button>
+        <td class="align-middle !text-center " *ngIf="seleccionar">
+          <input type="checkbox" (click)="checked(product)" />
+        </td>
+        <td class="align-middle 	">{{product.id}}</td>
+        <td class="align-middle	!text-center">{{product.cantidad}}</td>
+        <td class="align-middle	!text-center">{{product.addressDestino}}</td>
+        <td class="align-middle	!text-center">{{product.addressOrigen}}</td>
+        <td class="align-middle	!text-center">
+          <app-date-swap [elemento]="product.caducidad"></app-date-swap>
         </td>
         <td class="align-middle	">
-          <ng-container *ngIf="desactiveDatePipeTimeStamp;else date">
-            {{product.timestamp|datePipe }}
-          </ng-container>
-
-          <ng-template #date>
-            {{product.timestamp }}
-          </ng-template>
-          <button (click)="desactiveDatePipeTimeStamp=!desactiveDatePipeTimeStamp">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-            </svg>
-          </button>
-
-
+          <app-date-swap [elemento]="product.timestamp"></app-date-swap>
         </td>
       </tr>
-
     </ng-template>
   </p-table>
 
+  <div class="w-full flex justify-end">
+
+    <button class="btn button-blue w-auto px-2  mt-2" *ngIf="seleccionar" (click)="enviarTransaccionesSeleccionadas()">
+      Enviar Seleccion Mineria
+    </button>
+  </div>
 </ng-container>

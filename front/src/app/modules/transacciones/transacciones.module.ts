@@ -5,10 +5,10 @@ import { TransaccionesRoutingModule } from './transacciones-routing.module';
 import { TransaccionesComponent } from './transacciones.component';
 import { ComponentsModuleShared } from 'src/app/shared/components/components.module';
 import { TableTransaccionesComponent } from 'src/app/core/components/sections/transacciones/table-transacciones/table-transacciones.component';
-import { DatePipe } from 'src/app/shared/pipes/date/date.pipe';
 
 @NgModule({
-  declarations: [TransaccionesComponent, TableTransaccionesComponent, DatePipe],
+  declarations: [TransaccionesComponent, TableTransaccionesComponent],
   imports: [CommonModule, TransaccionesRoutingModule, ComponentsModuleShared],
+  exports: [TransaccionesComponent],
 })
 export class TransaccionesModule {}

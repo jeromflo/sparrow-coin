@@ -9,6 +9,7 @@ export interface IEnvironment {
     emits: {
       transacciones: {
         getTransacciones: string;
+        getWithoutMining: string;
         getTransaccionID: string;
         getTransaccionOrigin: string;
         getTransaccionDestino: string;
@@ -16,6 +17,7 @@ export interface IEnvironment {
       };
       nodo: {
         getNodos: string;
+        get_nodo_by_Miner: string;
         getNodosAllData: string;
         getNodoId: string;
         createNodo: string;
@@ -31,6 +33,9 @@ export interface IEnvironment {
       transacciones: {
         transaccion: string | Subject<any>;
         transacciones: string | Subject<any>;
+        transaccionesByOrigin: string | Subject<any>;
+        transaccionesByDestino: string | Subject<any>;
+
         nueva_transaccion: string | Subject<any>;
       };
       nodo: {

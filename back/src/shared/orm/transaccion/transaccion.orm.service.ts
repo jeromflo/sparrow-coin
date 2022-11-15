@@ -12,6 +12,11 @@ export class TransaccionORMService extends PromiseLogic {
     const sql = 'select * from Transacciones';
     return this.promiseGet<any>(sql);
   }
+  getWithoutMining(): Promise<any[]> {
+    const sql = 'select * from ViewTransaccionesNotMinning vtnm ';
+    return this.promiseGet<any>(sql);
+  }
+
   getById(id): Promise<any[]> {
     const sql = `select * from Transacciones where id like '${id}'`;
 

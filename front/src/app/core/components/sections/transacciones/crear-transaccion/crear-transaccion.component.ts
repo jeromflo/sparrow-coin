@@ -26,7 +26,7 @@ export class CrearTransaccionComponent implements OnInit {
 
     caducidad: FormControl<string | null>;
   }>;
-  private myAddress = 0;
+  private myAddress: string = '00000';
 
   get cant() {
     return this.forms.get('cant') as FormControl<string | null>;
@@ -86,7 +86,7 @@ export class CrearTransaccionComponent implements OnInit {
     const body = {
       cant: parseInt(values.cant?.toString() || '0'),
       addressDest: parseInt(values.addresDest?.toString() || '0'),
-      addresOrigin: Math.abs(this.myAddress),
+      addresOrigin: this.myAddress,
       caducidad: new Date(values.caducidad).getTime(),
     };
     this.store.dispatch(

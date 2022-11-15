@@ -36,7 +36,6 @@ export class NodoBlockchainGateway {
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
     const event = 'create-nodo';
-    console.log(this.ormTransaccionService);
 
     if (typeof data !== 'object') {
       this.server.emit('nuevo_nodo', {
@@ -81,27 +80,40 @@ export class NodoBlockchainGateway {
                   .then((res) => {
                     this.server.emit('nuevo_nodo', {
                       event,
+                      idMark: new Date().getTime(),
                       nodo: nodo.toStringDeep(),
                     });
                   })
                   .catch((err: Error) => {
                     client.emit('nuevo_nodo', {
+                      code: 4,
+                      idMark: new Date().getTime(),
+
                       error: `error received  ${err.toString()}`,
                     });
                   });
               })
               .catch((err: Error) => {
                 client.emit('nuevo_nodo', {
-                  error: `error received  ${err.toString()}`,
+                  code: 3,
+                  idMark: new Date().getTime(),
+
+                  error: `error received :${err.toString()}`,
                 });
               });
           } else {
             client.emit('nuevo_nodo', {
+              code: 2,
+              idMark: new Date().getTime(),
+
               error: `Transacciones ya minadas, cambia las transacciones`,
             });
           }
         } else {
           client.emit('nuevo_nodo', {
+            code: 1,
+            idMark: new Date().getTime(),
+
             error: `error received no se ha superado el tiempo de 10 minutos por bloque`,
           });
         }
@@ -129,6 +141,24 @@ export class NodoBlockchainGateway {
     } else {
       if (data.id) {
         this.ormNodeService.getById(data?.id).then((value) => {
+          client.emit('get_nodo', { event, value });
+        });
+      } else {
+        this.errorJson('get_nodo', client, data, '{ id:string}');
+      }
+    }
+    return false;
+  }
+  @SubscribeMessage('get_nodo_by_Miner')
+  getNodoByMiner(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    const event = 'get_nodo_by_Miner';
+    if (typeof data !== 'object') {
+      client.emit('get_nodo', {
+        error: `error the type of data is ${typeof data}, please send json`,
+      });
+    } else {
+      if (data.id) {
+        this.ormNodeService.getByMiner(data?.id).then((value) => {
           client.emit('get_nodo', { event, value });
         });
       } else {
@@ -209,6 +239,7 @@ export class NodoBlockchainGateway {
   };
   errorJson(event, client, data, expected) {
     client.emit(event, {
+      code: 0,
       error: `error received  ${JSON.stringify(data)}, expected ${expected}`,
     });
   }

@@ -26,6 +26,7 @@ export const environment: IEnvironment = {
     emits: {
       transacciones: {
         getTransacciones: 'getTransacciones',
+        getWithoutMining: 'getWithoutMining',
         getTransaccionID: 'getTransactionById',
         getTransaccionOrigin: 'getTransaccionesByOrigin',
         getTransaccionDestino: 'getTransaccionesByDestino',
@@ -33,6 +34,7 @@ export const environment: IEnvironment = {
       },
       nodo: {
         getNodos: 'get_nodos',
+        get_nodo_by_Miner: 'get_nodo_by_Miner',
         getNodosAllData: 'get_nodos_merge',
         getNodoId: 'get_nodo_by_id',
         createNodo: 'create-nodo',
@@ -47,6 +49,8 @@ export const environment: IEnvironment = {
     listen: {
       transacciones: {
         transaccion: 'transaccion',
+        transaccionesByOrigin: 'transaccionesByOrigin',
+        transaccionesByDestino: 'transaccionesByDestino',
         transacciones: 'transacciones',
         nueva_transaccion: 'nueva_transaccion',
       },

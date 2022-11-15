@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AppModule } from 'src/app/app.module';
 import { environment } from 'src/environments/environment';
 import { IEnvironment } from '../../interfaces/comunes/environment.interface';
@@ -12,6 +12,8 @@ export class SocketClientService {
   private subjects: IEnvironment['events']['listen'] = {
     transacciones: {
       transaccion: new Subject(),
+      transaccionesByOrigin: new Subject(),
+      transaccionesByDestino: new Subject(),
       transacciones: new Subject(),
       nueva_transaccion: new Subject(),
     },
@@ -54,8 +56,5 @@ export class SocketClientService {
   }
   public emitSocket(nameEvent: string, params?: any) {
     this.socketService.getSocket().emit(nameEvent, params);
-  }
-  imprimir(nameEvent: any) {
-    console.log(this.subjects);
   }
 }

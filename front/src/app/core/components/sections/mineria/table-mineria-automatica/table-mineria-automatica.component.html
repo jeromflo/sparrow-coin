@@ -1,0 +1,60 @@
+<ng-container *ngIf="(data$|async ) as data; else loading">
+
+  <p-table [@showTrigger]="'animate'" [paginator]="true" [rows]="10" styleClass="p-datatable-striped" [value]="data"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id_nodo">id_nodo <p-sortIcon field="id_nodo"></p-sortIcon>
+        </th>
+        <th pSortableColumn="minero">minero <p-sortIcon field="minero"></p-sortIcon>
+        </th>
+        <th pSortableColumn="caducidad">caducidad <p-sortIcon field="caducidad"></p-sortIcon>
+        </th>
+        <th pSortableColumn="id_union_transaccion_node">id_union_transaccion_node <p-sortIcon
+            field="id_union_transaccion_node">
+          </p-sortIcon>
+        </th>
+        <th pSortableColumn="timestamp_node">timestamp_node <p-sortIcon field="timestamp_node"></p-sortIcon>
+        </th>
+        <th pSortableColumn="transaction_id">transaction_id <p-sortIcon field="transaction_id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="transaction_cantidad">transaction_cantidad <p-sortIcon field="transaction_cantidad">
+          </p-sortIcon>
+        </th>
+        <th pSortableColumn="transaction_timestamp">transaction_timestamp <p-sortIcon field="transaction_timestamp">
+          </p-sortIcon>
+        </th>
+        <th pSortableColumn="addressDestino">addressDestino <p-sortIcon field="addressDestino"></p-sortIcon>
+        </th>
+        <th pSortableColumn="addressOrigen">addressOrigen <p-sortIcon field="addressOrigen"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+
+        <td class="align-middle 	">{{product.id_nodo}}</td>
+        <td class="align-middle	!text-center">{{product.minero}}</td>
+        <td class="align-middle	!text-center">
+          <app-date-swap [elemento]="product.caducidad"></app-date-swap>
+        </td>
+        <td class="align-middle	!text-center">{{product.id_union_transaccion_node}}</td>
+        <td class="align-middle	!text-center">
+          <app-date-swap [elemento]="product.timestamp_node"></app-date-swap>
+        </td>
+        <td class="align-middle	!text-center">{{product.transaction_id}}</td>
+        <td class="align-middle	!text-center">{{product.transaction_cantidad}}</td>
+        <td class="align-middle	!text-center">
+          <app-date-swap [elemento]="product.transaction_timestamp"></app-date-swap>
+        </td>
+        <td class="align-middle	!text-center">{{product.addressDestino}}</td>
+        <td class="align-middle	!text-center">{{product.addressOrigen}}</td>
+      </tr>
+
+    </ng-template>
+  </p-table>
+</ng-container>
+<ng-template #loading>
+
+  <app-empty-component></app-empty-component>
+</ng-template>

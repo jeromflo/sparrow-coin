@@ -1,0 +1,21 @@
+<div class="w-full  flex justify-center  m-5">
+
+  <div class="card  p-5 w-1/3 lg:w-1/2 grid grid-rows-2 justify-center justify-self-center "
+    [ngClass]="{'bg-green-300':balance>0,'bg-red-300':balance<=0}">
+    <span class="text-lg">
+
+      Your balance &nbsp;
+      <p class="underline inline">{{balance}}</p>&nbsp; SparrowCoin&nbsp;
+
+    </span>
+    <span class="grid grid-rows-2">
+      <span>
+        Cantidad en destino :&nbsp;{{destino}} SparrowCoin
+      </span>
+      <span>
+        Cantidad en origen :&nbsp;{{origen}} SparrowCoin
+      </span>
+    </span>
+
+  </div>
+</div>

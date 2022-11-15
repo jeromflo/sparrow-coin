@@ -17,6 +17,11 @@ export class NodeOrmService extends PromiseLogic {
 
     return this.promiseGet<any>(sql);
   }
+  getByMiner(id): Promise<any[]> {
+    const sql = `select * from ViewNodeTransactions vnt  where minero like '${id}'`;
+
+    return this.promiseGet<any>(sql);
+  }
   getLastNode() {
     const sql = `select * from Nodo n order by "timestamp" DESC limit 1;`;
     console.log(sql);
@@ -39,11 +44,7 @@ export class NodeOrmService extends PromiseLogic {
 
     return this.promiseGet<any>(sql);
   }
-  getByMiner(address): Promise<any[]> {
-    const sql = `select * from Nodo where minero like '${address}'`;
 
-    return this.promiseGet<any>(sql);
-  }
   insertNodo(nodo: Nodo, unionTransaccion: string) {
     const sql = `INSERT INTO Nodo
     (id, "timestamp", id_union_transaccion, minero)

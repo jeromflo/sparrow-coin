@@ -105,6 +105,29 @@ export class GetTransaccionGateway {
 
     return false;
   }
+  @SubscribeMessage('getWithoutMining')
+  getWithoutMining(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const event = 'getWithoutMining';
+    this.ormTransaccionService.getWithoutMining().then((value) => {
+      const items = value?.reduce((previous, next: any) => {
+        const trx = new Trx(
+          next.cantidad,
+          new Address(next.addressDestino),
+          new Address(next.addressOrigen),
+          next.caducidad,
+        );
+        trx.setTrx(next.id, next.timestamp);
+        return [...previous, trx.toStringDeep()];
+      }, []);
+
+      client.emit('transacciones', { event, items, value });
+    });
+
+    return false;
+  }
   @SubscribeMessage('getTransaccionesByOrigin')
   getTransaccionesByAddressOrigin(
     @MessageBody() data: any,
@@ -131,15 +154,15 @@ export class GetTransaccionGateway {
               return [...previous, trx.toStringDeep()];
             }, []);
 
-            client.emit('transacciones', { event, items, value });
+            client.emit('transaccionesByOrigin', { event, items, value });
           })
           .catch((error) => {
-            client.emit('transacciones', {
+            client.emit('transaccionesByOrigin', {
               error: error,
             });
           });
       } else {
-        client.emit('transacciones', {
+        client.emit('transaccionesByOrigin', {
           error: `error received  ${typeof data}, expected {addressOrigin:value}`,
         });
       }
@@ -172,15 +195,15 @@ export class GetTransaccionGateway {
               return [...previous, trx.toStringDeep()];
             }, []);
 
-            client.emit('transacciones', { event, items, value });
+            client.emit('transaccionesByDestino', { event, items, value });
           })
           .catch((error) => {
-            client.emit('transacciones', {
+            client.emit('transaccionesByDestino', {
               error: error,
             });
           });
       } else {
-        client.emit('transacciones', {
+        client.emit('transaccionesByDestino', {
           error: `error received  ${typeof data}, expected {addressDestino:value}`,
         });
       }

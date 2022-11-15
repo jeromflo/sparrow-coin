@@ -46,9 +46,9 @@
  * Zone JS is required by default for Angular itself.
  */
 import 'zone.js'; // Included with Angular CLI.
-
+var SHA256 = require('crypto-js/sha256');
 String.prototype.hashCode = function () {
-  var hash = 0,
+  /* var hash = 0,
     i,
     chr;
   if (this.length === 0) return hash;
@@ -57,7 +57,8 @@ String.prototype.hashCode = function () {
     hash = (hash << 5) - hash + chr;
     hash |= 0; // Convert to 32bit integer
   }
-  return hash;
+  return hash; */
+  return SHA256(this).toString();
 };
 /***************************************************************************************************
  * APPLICATION IMPORTS

@@ -1,1 +1,49 @@
-<p>mineria works!</p>
+<app-transacciones [seleccionar]="true" (seleccionados)="minarItems($event)" [inicializar]="false"></app-transacciones>
+<div class=" my-2 h-1 w-full bg-blue-400 "></div>
+<button class="btn button-blue my-2" (click)="mineriaAutomatica=!mineriaAutomatica">
+  <p> Empezar mineria automática</p>
+  <div class="justify-self-end">
+
+    <svg *ngIf="!mineriaAutomatica" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+    <svg *ngIf="mineriaAutomatica" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+      stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+
+  </div>
+</button>
+
+<ng-container *ngIf="mineriaAutomatica">
+  <app-mineria-automatica [@showTrigger]="'animate'" [functionMineria]="minarItems" [minerHash]="minerHash">
+  </app-mineria-automatica>
+</ng-container>
+<div class=" my-2 h-1 w-full bg-blue-400 "></div>
+
+
+<button class="mb-2 btn button-blue   flex justify-center " (click)="mostrarNodosMinados=!mostrarNodosMinados">
+  <p>
+
+    Mostrar nodos minados con transacciones
+  </p>
+  <div class="justify-self-end">
+
+    <svg *ngIf="!mostrarNodosMinados" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+    <svg *ngIf="mostrarNodosMinados" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+
+  </div>
+
+</button>
+<ng-container *ngIf="mostrarNodosMinados">
+  <app-table-mineria-automatica [@showTrigger]="'animate'" [minerHash]="minerHash">
+
+  </app-table-mineria-automatica>
+</ng-container>
