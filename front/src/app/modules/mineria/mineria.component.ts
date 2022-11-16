@@ -19,9 +19,11 @@ export class MineriaComponent implements OnInit {
   mineriaAutomatica = false;
   mostrarNodosMinados = true;
   public minerHash = '';
-  private transacciones: ITransaccion[] = [];
+  isMinning = false;
+  transacciones: ITransaccion[] = [];
   private lastIdMark = 0;
   private subscribe: Subscription = new Subscription();
+
   constructor(
     private socketService: SocketClientService,
     private store: Store<{ login: string[] }>
@@ -40,7 +42,11 @@ export class MineriaComponent implements OnInit {
           })
         )
         .subscribe((data) => {
-          this.minarItems(this.transacciones);
+          console.log(data);
+          setTimeout(() => {
+            console.log(`intentando cada 1 minutos`);
+            this.minarItems(this.transacciones);
+          }, 60000);
         })
     );
     /*   this.socketService
@@ -62,6 +68,7 @@ export class MineriaComponent implements OnInit {
         )
         .subscribe((data) => {
           this.lastIdMark = data.idMark;
+          this.isMinning = false;
           this.store.dispatch(
             setAlert({
               value: {
@@ -81,7 +88,7 @@ export class MineriaComponent implements OnInit {
     );
     this.subscribe.add(
       this.store.select('login').subscribe((data) => {
-        this.minerHash = JSON.stringify(data).hashCode();
+        this.minerHash = data.hashCode();
       })
     );
   }
@@ -95,7 +102,11 @@ export class MineriaComponent implements OnInit {
       environment.events.emits.transacciones.getWithoutMining
     );
   }
+  guardarSeleccionados(elementos: ITransaccion[]) {
+    this.transacciones = elementos;
+  }
   minarItems(elementos: ITransaccion[]) {
+    this.isMinning = true;
     this.transacciones = elementos;
     const trxs: ICreateNodo['transactions'] = elementos?.map((item) => ({
       id: item.id,

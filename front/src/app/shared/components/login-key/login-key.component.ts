@@ -19,7 +19,7 @@ export class LoginKeyComponent implements OnInit {
   constructor(private store: Store<{ login: string[] }>) {
     this.subscribe.add(
       this.store.select('login').subscribe((data) => {
-        this.hashLogin = data.toString().hashCode();
+        this.hashLogin = data.hashCode();
       })
     );
   }

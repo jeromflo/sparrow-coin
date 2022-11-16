@@ -14,6 +14,8 @@ export class SocketClientService {
       transaccion: new Subject(),
       transaccionesByOrigin: new Subject(),
       transaccionesByDestino: new Subject(),
+      transaccionesByOriginMined: new Subject(),
+      transaccionesByDestinoMined: new Subject(),
       transacciones: new Subject(),
       nueva_transaccion: new Subject(),
     },

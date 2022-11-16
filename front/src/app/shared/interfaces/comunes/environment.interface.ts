@@ -13,6 +13,8 @@ export interface IEnvironment {
         getTransaccionID: string;
         getTransaccionOrigin: string;
         getTransaccionDestino: string;
+        getTransaccionOriginMined: string;
+        getTransaccionDestinoMined: string;
         crearTransaccion: string;
       };
       nodo: {
@@ -35,7 +37,8 @@ export interface IEnvironment {
         transacciones: string | Subject<any>;
         transaccionesByOrigin: string | Subject<any>;
         transaccionesByDestino: string | Subject<any>;
-
+        transaccionesByOriginMined: string | Subject<any>;
+        transaccionesByDestinoMined: string | Subject<any>;
         nueva_transaccion: string | Subject<any>;
       };
       nodo: {

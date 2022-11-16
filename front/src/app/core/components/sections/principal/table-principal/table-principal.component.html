@@ -29,6 +29,8 @@
           </th>
           <th pSortableColumn="minero">minero <p-sortIcon field="minero"></p-sortIcon>
           </th>
+          <th pSortableColumn="recompensa">recompensa minero <p-sortIcon field="recompensa"></p-sortIcon>
+          </th>
           <th pSortableColumn="timestamp">timestamp <p-sortIcon field="timestamp"></p-sortIcon>
           </th>
         </tr>
@@ -38,6 +40,7 @@
           <td>{{product.id}}</td>
           <td>{{product.id_union_transaccion}}</td>
           <td>{{product.minero}}</td>
+          <td>{{product.recompensa}}</td>
           <td>
             <app-date-swap [elemento]="product.timestamp"></app-date-swap>
           </td>

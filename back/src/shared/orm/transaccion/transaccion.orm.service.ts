@@ -24,13 +24,18 @@ export class TransaccionORMService extends PromiseLogic {
   }
   getByAddressOrigin(address): Promise<any[]> {
     const sql = `select * from Transacciones where addressOrigen like '${address}'`;
-    console.log(sql);
-
     return this.promiseGet<any>(sql);
   }
   getByAddressDestino(address): Promise<any[]> {
     const sql = `select * from Transacciones where addressDestino like '${address}'`;
-
+    return this.promiseGet<any>(sql);
+  }
+  getByAddressOriginMined(address): Promise<any[]> {
+    const sql = `select * from ViewTransactionsGroupByOrigenMinning where addressOrigen like '${address}'`;
+    return this.promiseGet<any>(sql);
+  }
+  getByAddressDestinoMined(address): Promise<any[]> {
+    const sql = `select * from ViewTransactionsGroupByDestinoMinning where addressDestino like '${address}'`;
     return this.promiseGet<any>(sql);
   }
   getByArraysIdNotMinning(ids: string[]): Promise<any[]> {
@@ -38,8 +43,6 @@ export class TransaccionORMService extends PromiseLogic {
     ids.forEach((id, index) => {
       sql += index < ids.length - 1 ? `'${id}',` : `'${id}')`;
     });
-    console.log(sql);
-
     return this.promiseGet<any>(sql);
   }
   insertTransacction(trx: ITrx) {

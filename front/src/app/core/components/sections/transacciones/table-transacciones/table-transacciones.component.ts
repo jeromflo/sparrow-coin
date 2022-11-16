@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  ContentChild,
+} from '@angular/core';
 
 import { ITransaccion } from 'src/app/shared/interfaces/transaccion.interfaces';
 import { fadeAnimation2 } from 'src/app/shared/animations/fadeAnimation.animations';
@@ -14,6 +21,7 @@ export class TableTransaccionesComponent implements OnInit {
   @Output() seleccionados: EventEmitter<ITransaccion[]> = new EventEmitter<
     ITransaccion[]
   >();
+
   drop = false;
   desactiveDatePipeCaducidad = false;
   desactiveDatePipeTimeStamp = false;
@@ -28,10 +36,6 @@ export class TableTransaccionesComponent implements OnInit {
     } else {
       this.itemsSeleccionados[hash] = product;
     }
-  }
-  enviarTransaccionesSeleccionadas() {
-    if (Object.keys(this.itemsSeleccionados).length > 0) {
-      this.seleccionados.emit([...Object.values(this.itemsSeleccionados)]);
-    }
+    this.seleccionados.emit([...Object.values(this.itemsSeleccionados)]);
   }
 }

@@ -61,10 +61,8 @@
 
     <div class="w-full flex justify-end">
 
-      <button class="btn button-blue w-auto px-2  mt-2" *ngIf="seleccionar"
-        (click)="enviarTransaccionesSeleccionadas()">
-        Enviar Seleccion Mineria
-      </button>
+      <ng-content></ng-content>
+
     </div>
   </ng-container>
 </ng-container>

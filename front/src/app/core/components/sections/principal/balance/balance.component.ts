@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
+import { IFullNodoData } from 'src/app/shared/interfaces/nodos';
 import { ITransaccion } from 'src/app/shared/interfaces/transaccion.interfaces';
 import { SocketClientService } from 'src/app/shared/services/socketClient/socket-client.service';
 import { environment } from 'src/environments/environment';
@@ -14,6 +15,7 @@ export class BalanceComponent implements OnInit {
   balance = 0;
   destino = 0;
   origen = 0;
+  byMining = 0;
   private isDestinoEnd = false;
   private isOrigenEnd = false;
   private hashID = '';
@@ -24,7 +26,7 @@ export class BalanceComponent implements OnInit {
   ) {
     this.subscribe.add(
       this.store.select('login').subscribe((data) => {
-        this.hashID = data.toString().hashCode();
+        this.hashID = data.hashCode();
         this.socketDestino();
         this.socketOrigen();
       })
@@ -37,10 +39,10 @@ export class BalanceComponent implements OnInit {
   }
   ngOnInit(): void {}
   calculateBalance() {
-    this.balance = this.destino - this.origen;
+    this.balance = this.byMining + this.destino - this.origen;
   }
   socketDestino() {
-    const pathDestino = ['transacciones', 'transaccionesByDestino'];
+    const pathDestino = ['transacciones', 'transaccionesByDestinoMined'];
     this.socketService.getOn(pathDestino);
     this.subscribe.add(
       this.socketService
@@ -56,12 +58,12 @@ export class BalanceComponent implements OnInit {
         )
     );
     this.socketService.emitSocket(
-      environment.events.emits.transacciones.getTransaccionDestino,
+      environment.events.emits.transacciones.getTransaccionDestinoMined,
       { addressDestino: this.hashID }
     );
   }
   socketOrigen() {
-    const pathOrigen = ['transacciones', 'transaccionesByOrigin'];
+    const pathOrigen = ['transacciones', 'transaccionesByOriginMined'];
     this.socketService.getOn(pathOrigen);
     this.subscribe.add(
       this.socketService
@@ -77,8 +79,20 @@ export class BalanceComponent implements OnInit {
         )
     );
     this.socketService.emitSocket(
-      environment.events.emits.transacciones.getTransaccionOrigin,
+      environment.events.emits.transacciones.getTransaccionOriginMined,
       { addressOrigin: this.hashID }
     );
+  }
+  subscriptionNuevoNodo(): void {
+    const pathNuevoNodo = ['nodo', 'get_nodo'];
+    this.socketService.getOn(pathNuevoNodo);
+    this.socketService
+      .getObservable(pathNuevoNodo)
+      .pipe(map((data) => data?.value))
+      .subscribe((data: IFullNodoData[]) => {
+        data.forEach((elNodo: any) => {
+          this.byMining += elNodo.recompensa;
+        });
+      });
   }
 }

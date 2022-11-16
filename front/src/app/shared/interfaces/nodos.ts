@@ -16,4 +16,5 @@ export interface IFullNodoData {
   transaction_timestamp: number;
   addressDestino: string;
   addressOrigen: string;
+  recompensa: number;
 }

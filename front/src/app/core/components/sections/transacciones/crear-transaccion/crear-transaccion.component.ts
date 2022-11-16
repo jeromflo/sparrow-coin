@@ -44,7 +44,7 @@ export class CrearTransaccionComponent implements OnInit {
   ) {
     this.subscribe.add(
       this.store.select('login').subscribe((data) => {
-        this.myAddress = data.toString().hashCode();
+        this.myAddress = data.hashCode();
       })
     );
     this.forms = this.fb.group({

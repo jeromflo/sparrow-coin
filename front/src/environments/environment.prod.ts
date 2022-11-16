@@ -13,6 +13,8 @@ export const environment: IEnvironment = {
         getTransaccionID: 'getTransactionById',
         getTransaccionOrigin: 'getTransaccionesByOrigin',
         getTransaccionDestino: 'getTransaccionesByDestino',
+        getTransaccionOriginMined: 'getTransaccionesByOriginMined',
+        getTransaccionDestinoMined: 'getTransaccionesByDestinoMined',
         crearTransaccion: 'create_transaccion',
       },
       nodo: {
@@ -36,6 +38,8 @@ export const environment: IEnvironment = {
         transaccionesByOrigin: 'transaccionesByOrigin',
         transaccionesByDestino: 'transaccionesByDestino',
         transacciones: 'transacciones',
+        transaccionesByOriginMined: 'transaccionesByOriginMined',
+        transaccionesByDestinoMined: 'transaccionesByDestinoMined',
         nueva_transaccion: 'nueva_transaccion',
       },
       nodo: {

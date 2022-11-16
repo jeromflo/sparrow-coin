@@ -169,6 +169,51 @@ export class GetTransaccionGateway {
     }
     return false;
   }
+  @SubscribeMessage('getTransaccionesByOriginMined')
+  getTransaccionesByAddressOriginMined(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const event = 'getTransaccionesByOriginMined';
+    if (typeof data !== 'object') {
+      client.emit('transaccion-by-id', {
+        error: `error the type of data is ${typeof data}, please send json`,
+      });
+    } else {
+      if (data.addressOrigin) {
+        this.ormTransaccionService
+          .getByAddressOriginMined(data.addressOrigin)
+          .then((value: any) => {
+            const items = value?.reduce((previous, next: any) => {
+              const trx = new Trx(
+                next.cantidad,
+                new Address(next.addressDestino),
+                new Address(next.addressOrigen),
+                next.caducidad,
+              );
+              trx.setTrx(next.id, next.timestamp);
+              return [...previous, trx.toStringDeep()];
+            }, []);
+
+            client.emit('getTransaccionesByOriginMined', {
+              event,
+              items,
+              value,
+            });
+          })
+          .catch((error) => {
+            client.emit('getTransaccionesByOriginMined', {
+              error: error,
+            });
+          });
+      } else {
+        client.emit('getTransaccionesByOriginMined', {
+          error: `error received  ${typeof data}, expected {addressOrigin:value}`,
+        });
+      }
+    }
+    return false;
+  }
   @SubscribeMessage('getTransaccionesByDestino')
   getTransaccionesByDestino(
     @MessageBody() data: any,
@@ -204,6 +249,47 @@ export class GetTransaccionGateway {
           });
       } else {
         client.emit('transaccionesByDestino', {
+          error: `error received  ${typeof data}, expected {addressDestino:value}`,
+        });
+      }
+    }
+    return false;
+  }
+  @SubscribeMessage('getTransaccionesByDestinoMined')
+  getTransaccionesByDestinoMined(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const event = 'getTransaccionesByDestinoMined';
+    if (typeof data !== 'object') {
+      client.emit('transaccion-by-id', {
+        error: `error the type of data is ${typeof data}, please send json`,
+      });
+    } else {
+      if (data.addressDestino) {
+        this.ormTransaccionService
+          .getByAddressDestinoMined(data.addressDestino)
+          .then((value: any) => {
+            const items = value?.reduce((previous, next: any) => {
+              const trx = new Trx(
+                next.cantidad,
+                new Address(next.addressDestino),
+                new Address(next.addressOrigen),
+                next.caducidad,
+              );
+              trx.setTrx(next.id, next.timestamp);
+              return [...previous, trx.toStringDeep()];
+            }, []);
+
+            client.emit('transaccionesByDestinoMined', { event, items, value });
+          })
+          .catch((error) => {
+            client.emit('transaccionesByDestinoMined', {
+              error: error,
+            });
+          });
+      } else {
+        client.emit('transaccionesByDestinoMined', {
           error: `error received  ${typeof data}, expected {addressDestino:value}`,
         });
       }
