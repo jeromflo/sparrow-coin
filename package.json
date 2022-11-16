@@ -1,0 +1,26 @@
+{
+  "name": "sparrow-coin",
+  "version": "1.0.0",
+  "description": "front, back and documentation of sparrow coin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "run-p start:angular start:nest",
+    "start:concurrently": "concurrently -k -n \"client,server\" -c \"cyan,magenta\" \"npm run start:angular\" \" npm run start:nest\"",
+    "start:angular": "cd front && ng serve",
+    "start:nest": "cd back && nest start",
+    "start:nest:watch": "cd back && nest start --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeromflo/sparrow-coin.git"
+  },
+  "author": "Jesus Salvador Romero Flores",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeromflo/sparrow-coin/issues"
+  },
+  "homepage": "https://github.com/jeromflo/sparrow-coin#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
