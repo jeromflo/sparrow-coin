@@ -44,6 +44,8 @@ export const environment: IEnvironment = {
       },
       nodo: {
         get_nodo: 'get_nodo',
+        get_nodo_By_Miner: 'get_nodo_By_Miner',
+
         nuevoNodo: 'nuevo_nodo',
       },
       verificarDatabase: {

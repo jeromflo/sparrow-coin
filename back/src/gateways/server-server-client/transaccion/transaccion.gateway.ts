@@ -194,20 +194,19 @@ export class GetTransaccionGateway {
               trx.setTrx(next.id, next.timestamp);
               return [...previous, trx.toStringDeep()];
             }, []);
-
-            client.emit('getTransaccionesByOriginMined', {
+            client.emit('transaccionesByOriginMined', {
               event,
               items,
               value,
             });
           })
           .catch((error) => {
-            client.emit('getTransaccionesByOriginMined', {
+            client.emit('transaccionesByOriginMined', {
               error: error,
             });
           });
       } else {
-        client.emit('getTransaccionesByOriginMined', {
+        client.emit('transaccionesByOriginMined', {
           error: `error received  ${typeof data}, expected {addressOrigin:value}`,
         });
       }

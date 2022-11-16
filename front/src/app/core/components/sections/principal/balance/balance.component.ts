@@ -18,7 +18,7 @@ export class BalanceComponent implements OnInit {
   byMining = 0;
   private isDestinoEnd = false;
   private isOrigenEnd = false;
-  private hashID = '';
+  private minerHash = '';
   private subscribe: Subscription = new Subscription();
   constructor(
     private socketService: SocketClientService,
@@ -26,9 +26,14 @@ export class BalanceComponent implements OnInit {
   ) {
     this.subscribe.add(
       this.store.select('login').subscribe((data) => {
-        this.hashID = data.hashCode();
+        this.minerHash = data.hashCode();
         this.socketDestino();
         this.socketOrigen();
+        this.subscriptionNuevoNodo();
+        this.socketService.emitSocket(
+          environment.events.emits.nodo.get_nodo_by_Miner,
+          { id: this.minerHash }
+        );
       })
     );
   }
@@ -39,6 +44,8 @@ export class BalanceComponent implements OnInit {
   }
   ngOnInit(): void {}
   calculateBalance() {
+    console.log(this.byMining);
+
     this.balance = this.byMining + this.destino - this.origen;
   }
   socketDestino() {
@@ -59,7 +66,7 @@ export class BalanceComponent implements OnInit {
     );
     this.socketService.emitSocket(
       environment.events.emits.transacciones.getTransaccionDestinoMined,
-      { addressDestino: this.hashID }
+      { addressDestino: this.minerHash }
     );
   }
   socketOrigen() {
@@ -70,6 +77,8 @@ export class BalanceComponent implements OnInit {
         .getObservable(pathOrigen)
         .subscribe(
           (data: { event: string; items: string; value: ITransaccion[] }) => {
+            console.log(data);
+
             data?.value.forEach((acc) => {
               this.origen += acc.cantidad;
             }, 0);
@@ -80,19 +89,36 @@ export class BalanceComponent implements OnInit {
     );
     this.socketService.emitSocket(
       environment.events.emits.transacciones.getTransaccionOriginMined,
-      { addressOrigin: this.hashID }
+      { addressOrigin: this.minerHash }
     );
   }
   subscriptionNuevoNodo(): void {
-    const pathNuevoNodo = ['nodo', 'get_nodo'];
+    const pathNuevoNodo = ['nodo', 'get_nodo_By_Miner'];
     this.socketService.getOn(pathNuevoNodo);
     this.socketService
       .getObservable(pathNuevoNodo)
       .pipe(map((data) => data?.value))
-      .subscribe((data: IFullNodoData[]) => {
-        data.forEach((elNodo: any) => {
-          this.byMining += elNodo.recompensa;
-        });
+      .subscribe((data: any[]) => {
+        let nodos_ids: string[] = [];
+        data
+          .filter((elNodo) => !isNaN(parseInt(elNodo.recompensa)))
+          .filter((elNodo) => {
+            if (!elNodo.id_nodo) {
+              return false;
+            }
+            if (nodos_ids.includes(elNodo?.id_nodo)) {
+              return false;
+            }
+            // console.table(elNodo);
+
+            nodos_ids.push(elNodo?.id_nodo);
+            return true;
+          })
+          .forEach((elNodo: any) => {
+            this.byMining += elNodo.recompensa;
+            // console.log(this.byMining);
+          });
+        this.calculateBalance();
       });
   }
 }

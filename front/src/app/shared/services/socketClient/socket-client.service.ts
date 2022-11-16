@@ -21,6 +21,7 @@ export class SocketClientService {
     },
     nodo: {
       get_nodo: new Subject(),
+      get_nodo_By_Miner: new Subject(),
       nuevoNodo: new Subject(),
     },
     verificarDatabase: {

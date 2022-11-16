@@ -43,6 +43,7 @@ export interface IEnvironment {
       };
       nodo: {
         get_nodo: string | Subject<any>;
+        get_nodo_By_Miner: string | Subject<any>;
         nuevoNodo: string | Subject<any>;
       };
       verificarDatabase: {

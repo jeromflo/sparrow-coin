@@ -170,10 +170,10 @@ export class NodoBlockchainGateway {
     } else {
       if (data.id) {
         this.ormNodeService.getByMiner(data?.id).then((value) => {
-          client.emit('get_nodo', { event, value });
+          client.emit('get_nodo_By_Miner', { event, value });
         });
       } else {
-        this.errorJson('get_nodo', client, data, '{ id:string}');
+        this.errorJson('get_nodo_By_Miner', client, data, '{ id:string}');
       }
     }
     return false;
