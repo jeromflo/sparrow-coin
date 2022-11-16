@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { AlertsComponent } from './alerts/alerts.component';
 import { DateSwapComponent } from './date-swap/date-swap.component';
 import { DatePipe } from '../pipes/date/date.pipe';
+import { LoginKeyComponent } from './login-key/login-key.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { DatePipe } from '../pipes/date/date.pipe';
     AlertsComponent,
     DateSwapComponent,
     DatePipe,
+    LoginKeyComponent,
   ],
   imports: [CommonModule, TableModule],
   exports: [
@@ -23,6 +25,7 @@ import { DatePipe } from '../pipes/date/date.pipe';
     AlertsComponent,
     DateSwapComponent,
     DatePipe,
+    LoginKeyComponent,
   ],
 })
 export class ComponentsModuleShared {}

@@ -2,6 +2,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: "oswald_semiBold";
+  src: url("./assets/fonts/oswald/Oswald-SemiBold.ttf");
+}
+@font-face {
+  font-family: "cascadia_code_regular";
+  src: url("./assets/fonts/cascadia_code/CascadiaCode.ttf");
+}
+@layer base{
+  html {
+    font-family: "cascadia_code_regular";
+  }
+
+
+}
 @layer components{
   .btn{
     @apply  rounded-lg flex justify-center before:border

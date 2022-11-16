@@ -23,7 +23,7 @@ export const fadeAnimation2 = trigger('showTrigger', [
       opacity: '1',
     })
   ),
-  transition('void => *', [
+  transition('void <=> *', [
     style({ opacity: '0.4' }),
     animate('300ms 0s ease-in-out'),
   ]),

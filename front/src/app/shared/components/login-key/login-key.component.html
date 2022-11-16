@@ -1,0 +1,12 @@
+<div class=" flex justify-center relative">
+
+  <p class="text-xs sm:text-sm  text-ellipsis
+  whitespace-nowrap overflow-hidden basis-1/4
+  sm:basis-full cursor-grab active:cursor-grabbing " (click)="copyHash()">
+    {{hashLogin}}
+
+  </p>
+  <div [@fadeAnimation] *ngIf="visibleCopyButton" class="absolute bg-slate-200 border rounded top-6">
+    copiado
+  </div>
+</div>
