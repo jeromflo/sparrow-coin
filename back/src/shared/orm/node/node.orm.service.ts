@@ -24,7 +24,6 @@ export class NodeOrmService extends PromiseLogic {
   }
   getLastNode() {
     const sql = `select * from Nodo n order by "timestamp" DESC limit 1;`;
-    console.log(sql);
 
     return this.promiseGet<any>(sql);
   }
@@ -47,10 +46,10 @@ export class NodeOrmService extends PromiseLogic {
 
   insertNodo(nodo: Nodo, unionTransaccion: string) {
     const sql = `INSERT INTO Nodo
-    (id, "timestamp", id_union_transaccion, minero)
+    (id, "timestamp", id_union_transaccion, minero,recompensa)
     VALUES('${nodo.getIdHash()}', ${nodo.getTimeStamp()}, '${unionTransaccion}', '${nodo
       .getMiner()
-      .getId()}');
+      .getId()}', '${nodo.getRecompensa()}');
    `;
     return this.promiseOthers<any>(sql);
   }

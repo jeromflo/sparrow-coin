@@ -8,6 +8,7 @@ export class Nodo {
   private timeStamp: number;
   private idHash: string;
   private transacciones: Trx[];
+  private recompensa = 0;
   private merkleTree: MerkleTreeImpl;
   constructor(miner: Miner, transacciones: Trx[], merkleTree: MerkleTreeImpl) {
     this.timeStamp = new Date().getTime();
@@ -46,6 +47,12 @@ export class Nodo {
   public getTransaccion(trx: Trx): Trx {
     return this.transacciones.filter((el) => trx.getId() === el.getId())[0];
   }
+  public getRecompensa(): number {
+    return this.recompensa;
+  }
+  public setRecompensa(cant: number): void {
+    this.recompensa = cant;
+  }
 
   public getMerkleTree(): MerkleTreeImpl {
     return this.merkleTree;
@@ -54,6 +61,7 @@ export class Nodo {
   public setMerkleTree(merkleTree: MerkleTreeImpl): void {
     this.merkleTree = merkleTree;
   }
+
   toStringDeep() {
     return JSON.stringify(this);
   }
@@ -64,6 +72,7 @@ export class Nodo {
       minero: this.getMiner().getId(),
       transacciones: this.getTransacciones().toString(),
       merkleTree: this.getMerkleTree().getLeaves(),
+      cantidad: this.getRecompensa(),
     };
   }
 }

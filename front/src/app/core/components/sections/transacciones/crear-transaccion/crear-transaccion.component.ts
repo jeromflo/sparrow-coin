@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { fadeAnimation2 } from 'src/app/shared/animations/fadeAnimation.animations';
 import { setAlert } from 'src/app/shared/redux/actions/comun/alerts.actions';
 import { SocketClientService } from 'src/app/shared/services/socketClient/socket-client.service';
@@ -27,7 +27,7 @@ export class CrearTransaccionComponent implements OnInit {
     caducidad: FormControl<string | null>;
   }>;
   private myAddress: string = '00000';
-
+  private subscribe: Subscription = new Subscription();
   get cant() {
     return this.forms.get('cant') as FormControl<string | null>;
   }
@@ -42,9 +42,11 @@ export class CrearTransaccionComponent implements OnInit {
     private store: Store<{ login: string[] }>,
     private socketService: SocketClientService
   ) {
-    this.store.select('login').subscribe((data) => {
-      this.myAddress = data.toString().hashCode();
-    });
+    this.subscribe.add(
+      this.store.select('login').subscribe((data) => {
+        this.myAddress = data.toString().hashCode();
+      })
+    );
     this.forms = this.fb.group({
       cant: ['', [Validators.min(0)]],
       addresDest: [''],
@@ -55,22 +57,28 @@ export class CrearTransaccionComponent implements OnInit {
     });
     const pathNuevaTransaccion = ['transacciones', 'transacciones'];
     this.socketService.getOn(pathNuevaTransaccion);
-    this.socketService
-      .getObservable(pathNuevaTransaccion)
-      .subscribe((data: any) => {
-        this.store.dispatch(
-          setAlert({
-            value: {
-              menssage: 'Transaccion creada',
-              title: 'Transaccion',
-              icon: 'success',
-              timer: 2000,
-            },
-          })
-        );
-      });
+    this.subscribe.add(
+      this.socketService
+        .getObservable(pathNuevaTransaccion)
+        .subscribe((data: any) => {
+          this.store.dispatch(
+            setAlert({
+              value: {
+                menssage: 'Transaccion creada',
+                title: 'Transaccion',
+                icon: 'success',
+                timer: 2000,
+              },
+            })
+          );
+        })
+    );
   }
-
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscribe.unsubscribe();
+  }
   ngOnInit(): void {}
   submitData(el: Event) {
     el.preventDefault();

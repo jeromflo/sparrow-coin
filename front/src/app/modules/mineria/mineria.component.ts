@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { fadeAnimation2 } from 'src/app/shared/animations/fadeAnimation.animations';
 import { IAlertRedux } from 'src/app/shared/interfaces/comunes/alert.interface';
 import { ICreateNodo } from 'src/app/shared/interfaces/nodos/create_nodo.interface';
@@ -21,25 +21,28 @@ export class MineriaComponent implements OnInit {
   public minerHash = '';
   private transacciones: ITransaccion[] = [];
   private lastIdMark = 0;
+  private subscribe: Subscription = new Subscription();
   constructor(
     private socketService: SocketClientService,
     private store: Store<{ login: string[] }>
   ) {
     const pathNuevoNodo = ['nodo', 'nuevoNodo'];
     this.socketService.getOn(pathNuevoNodo);
-    this.socketService
-      .getObservable(pathNuevoNodo)
-      .pipe(
-        filter((el) => {
-          return this.transacciones.length > 0;
-        }),
-        filter((el) => {
-          return el?.code == 1;
+    this.subscribe.add(
+      this.socketService
+        .getObservable(pathNuevoNodo)
+        .pipe(
+          filter((el) => {
+            return this.transacciones.length > 0;
+          }),
+          filter((el) => {
+            return el?.code == 1;
+          })
+        )
+        .subscribe((data) => {
+          this.minarItems(this.transacciones);
         })
-      )
-      .subscribe((data) => {
-        this.minarItems(this.transacciones);
-      });
+    );
     /*   this.socketService
       .getObservable(pathNuevoNodo)
       .pipe(
@@ -48,38 +51,45 @@ export class MineriaComponent implements OnInit {
         })
       )
       .subscribe(console.log); */
-    this.socketService
-      .getObservable(pathNuevoNodo)
-      .pipe(
-        filter((el) => el.idMark !== this.lastIdMark),
-        filter((el) => {
-          return !el.error;
-        })
-      )
-      .subscribe((data) => {
-        this.lastIdMark = data.idMark;
-        this.store.dispatch(
-          setAlert({
-            value: {
-              menssage: 'Transaccion Realizada',
-              icon: 'success',
-              title: 'create_nodo',
-              timer: 2000,
-            },
+    this.subscribe.add(
+      this.socketService
+        .getObservable(pathNuevoNodo)
+        .pipe(
+          filter((el) => el.idMark !== this.lastIdMark),
+          filter((el) => {
+            return !el.error;
           })
-        );
-        setTimeout(() => {
-          this.socketService.emitSocket(
-            environment.events.emits.transacciones.getWithoutMining
+        )
+        .subscribe((data) => {
+          this.lastIdMark = data.idMark;
+          this.store.dispatch(
+            setAlert({
+              value: {
+                menssage: 'Transaccion Realizada',
+                icon: 'success',
+                title: 'create_nodo',
+                timer: 2000,
+              },
+            })
           );
-        }, 2000);
-      });
-
-    this.store.select('login').subscribe((data) => {
-      this.minerHash = JSON.stringify(data).hashCode();
-    });
+          setTimeout(() => {
+            this.socketService.emitSocket(
+              environment.events.emits.transacciones.getWithoutMining
+            );
+          }, 2000);
+        })
+    );
+    this.subscribe.add(
+      this.store.select('login').subscribe((data) => {
+        this.minerHash = JSON.stringify(data).hashCode();
+      })
+    );
   }
-
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscribe.unsubscribe();
+  }
   ngOnInit(): void {
     this.socketService.emitSocket(
       environment.events.emits.transacciones.getWithoutMining

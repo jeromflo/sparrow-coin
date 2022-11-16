@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { delay, filter, interval } from 'rxjs';
+import { delay, filter, interval, Subscription } from 'rxjs';
 import { ITransaccion } from 'src/app/shared/interfaces/transaccion.interfaces';
 import { setAlert } from 'src/app/shared/redux/actions/comun/alerts.actions';
 import { SocketClientService } from 'src/app/shared/services/socketClient/socket-client.service';
@@ -22,6 +22,7 @@ export class MineriaAutomaticaComponent implements OnInit {
 
   private readonly INITIAL_TIMER = this.MINUTOS * 3;
   private timer = this.INITIAL_TIMER;
+  private subscribe: Subscription = new Subscription();
   get contador() {
     return this.timer;
   }
@@ -35,7 +36,11 @@ export class MineriaAutomaticaComponent implements OnInit {
     this.subscriptionNuevoNodoNoOk();
     this.getDispathWitouthMining();
   }
-
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscribe.unsubscribe();
+  }
   ngOnInit(): void {}
   autoMineria = () => {
     let items: ITransaccion[] = [];
@@ -80,49 +85,55 @@ export class MineriaAutomaticaComponent implements OnInit {
 
     this.socketService.getOn(pathTransacciones);
 
-    this.socketService
-      .getObservable(pathTransacciones)
-      .pipe(filter(() => !this.isMining))
-      .subscribe((el) => {
-        this.transacciones = el?.value;
-        /*         this.autoMineria();
-         */
-      });
+    this.subscribe.add(
+      this.socketService
+        .getObservable(pathTransacciones)
+        .pipe(filter(() => !this.isMining))
+        .subscribe((el) => {
+          this.transacciones = el?.value;
+          /*         this.autoMineria();
+           */
+        })
+    );
   }
   subscriptionNuevoNodoOK() {
     const pathNuevoNodo = ['nodo', 'nuevoNodo'];
     this.socketService.getOn(pathNuevoNodo);
-    this.socketService
-      .getObservable(pathNuevoNodo)
-      .pipe(
-        filter(() => !this.isMining),
-        filter((el) => {
-          return !el.error;
+    this.subscribe.add(
+      this.socketService
+        .getObservable(pathNuevoNodo)
+        .pipe(
+          filter(() => !this.isMining),
+          filter((el) => {
+            return !el.error;
+          })
+        )
+        .subscribe((data) => {
+          this.timer = this.INITIAL_TIMER;
+          /*         setTimeout(this.autoMineria, this.timer);
+           */
         })
-      )
-      .subscribe((data) => {
-        this.timer = this.INITIAL_TIMER;
-        /*         setTimeout(this.autoMineria, this.timer);
-         */
-      });
+    );
   }
   subscriptionNuevoNodoNoOk() {
     const pathNuevoNodo = ['nodo', 'nuevoNodo'];
     this.socketService.getOn(pathNuevoNodo);
-    this.socketService
-      .getObservable(pathNuevoNodo)
-      .pipe(
-        filter(() => !this.isMining),
-        filter((el) => {
-          return this.transacciones.length > 0;
-        }),
-        filter((el) => {
-          return el?.code == 1;
+    this.subscribe.add(
+      this.socketService
+        .getObservable(pathNuevoNodo)
+        .pipe(
+          filter(() => !this.isMining),
+          filter((el) => {
+            return this.transacciones.length > 0;
+          }),
+          filter((el) => {
+            return el?.code == 1;
+          })
+        )
+        .subscribe((data) => {
+          /*         setTimeout(this.autoMineria, this.timer);
+           */
         })
-      )
-      .subscribe((data) => {
-        /*         setTimeout(this.autoMineria, this.timer);
-         */
-      });
+    );
   }
 }

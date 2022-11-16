@@ -7,6 +7,7 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { DateSwapComponent } from './date-swap/date-swap.component';
 import { DatePipe } from '../pipes/date/date.pipe';
 import { LoginKeyComponent } from './login-key/login-key.component';
+import { EmptyTableComponent } from './empty-table/empty-table.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { LoginKeyComponent } from './login-key/login-key.component';
     DateSwapComponent,
     DatePipe,
     LoginKeyComponent,
+    EmptyTableComponent,
   ],
   imports: [CommonModule, TableModule],
   exports: [
@@ -26,6 +28,7 @@ import { LoginKeyComponent } from './login-key/login-key.component';
     DateSwapComponent,
     DatePipe,
     LoginKeyComponent,
+    EmptyTableComponent,
   ],
 })
 export class ComponentsModuleShared {}

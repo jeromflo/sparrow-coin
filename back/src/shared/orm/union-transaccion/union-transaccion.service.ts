@@ -31,6 +31,12 @@ export class UnionTransaccionService extends PromiseLogic {
 
     return this.promiseGet<any>(sql);
   }
+  deleteUniontransactions(ut: UnionTransaccion) {
+    const sql = `DELETE FROM Union_Transacciones
+    WHERE id='${ut.getId()}';
+    `;
+    return this.promiseOthers<any>(sql);
+  }
   insertUnionTransaccion(ut: UnionTransaccion) {
     let sql = '';
     ut.getTrx().forEach((trx) => {

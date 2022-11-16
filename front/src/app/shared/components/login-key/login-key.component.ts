@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import {
   fadeAnimation,
   fadeAnimation2,
@@ -14,11 +15,18 @@ import {
 export class LoginKeyComponent implements OnInit {
   hashLogin = '';
   visibleCopyButton = false;
-
+  private subscribe: Subscription = new Subscription();
   constructor(private store: Store<{ login: string[] }>) {
-    this.store.select('login').subscribe((data) => {
-      this.hashLogin = data.toString().hashCode();
-    });
+    this.subscribe.add(
+      this.store.select('login').subscribe((data) => {
+        this.hashLogin = data.toString().hashCode();
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscribe.unsubscribe();
   }
   ngOnInit(): void {}
   copyHash() {

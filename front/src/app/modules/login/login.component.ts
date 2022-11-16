@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, tap } from 'rxjs';
+import { filter, Subscription, tap } from 'rxjs';
 import { listAnimation } from 'src/app/shared/animations/listAnimations.animations';
 import { setKeys } from 'src/app/shared/redux/actions/comun/loging.actions';
 
@@ -21,6 +21,7 @@ export class LoginComponent {
   numberKeys = '9';
   formsGroup;
   private hashLogin: string = '0000';
+  private subscribe: Subscription = new Subscription();
   constructor(
     private fb: FormBuilder,
     private route: Router,
@@ -29,44 +30,53 @@ export class LoginComponent {
     this.formsGroup = this.fb.group({
       formsArray: this.fb.array([]),
     });
-    this.store
-      .select('login')
-      .pipe(
-        tap((data) => {
-          if (!(data.length > 0)) {
-            this.numberKeys = '9';
-            this.createArray();
-          }
-        }),
-        filter((el) => el.toString().hashCode() !== this.hashLogin),
-        tap((el) => {
-          this.hashLogin = el.toString().hashCode();
-        })
-      )
-      .subscribe((data) => {
-        this.resetFormsArray();
-
-        data?.forEach((el) => {
-          this.formsArray.push(this.fb.control('', Validators.required));
-        });
-        this.formsArray.patchValue(data);
-        this.numberKeys = data.length.toString();
-        this.route.navigate(['/principal']);
-      });
-    this.formsArray.valueChanges
-      .pipe(
-        filter((data: []) => data.length > 0),
-        filter((data: []) => {
-          let haveNull = false;
-          data.forEach((el: string) => {
-            if (!el) {
-              haveNull = true;
+    this.subscribe.add(
+      this.store
+        .select('login')
+        .pipe(
+          tap((data) => {
+            if (!(data.length > 0)) {
+              this.numberKeys = '9';
+              this.createArray();
             }
+          }),
+          filter((el) => el.toString().hashCode() !== this.hashLogin),
+          tap((el) => {
+            this.hashLogin = el.toString().hashCode();
+          })
+        )
+        .subscribe((data) => {
+          this.resetFormsArray();
+
+          data?.forEach((el) => {
+            this.formsArray.push(this.fb.control('', Validators.required));
           });
-          return !haveNull;
+          this.formsArray.patchValue(data);
+          this.numberKeys = data.length.toString();
+          this.route.navigate(['/principal']);
         })
-      )
-      .subscribe();
+    );
+    this.subscribe.add(
+      this.formsArray.valueChanges
+        .pipe(
+          filter((data: []) => data.length > 0),
+          filter((data: []) => {
+            let haveNull = false;
+            data.forEach((el: string) => {
+              if (!el) {
+                haveNull = true;
+              }
+            });
+            return !haveNull;
+          })
+        )
+        .subscribe()
+    );
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscribe.unsubscribe();
   }
   get formsArray() {
     return this.formsGroup.get('formsArray') as FormArray;

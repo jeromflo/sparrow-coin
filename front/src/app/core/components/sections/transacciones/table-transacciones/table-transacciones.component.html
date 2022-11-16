@@ -17,50 +17,57 @@
   </div>
 
 </button>
-<ng-container *ngIf="data&&drop">
+<ng-container *ngIf="data &&drop ">
 
-  <p-table [@showTrigger]="'animate'" [paginator]="true" [rows]="10" styleClass="p-datatable-striped" [value]="data"
-    responsiveLayout="scroll">
-    <ng-template pTemplate="header">
-      <tr>
-        <th *ngIf="seleccionar">Seleccionar</th>
-        <th pSortableColumn="id">id <p-sortIcon field="id"></p-sortIcon>
-        </th>
-        <th pSortableColumn="cantidad">cantidad<p-sortIcon field="cantidad"></p-sortIcon>
-        </th>
-        <th pSortableColumn="addressDestino">address Destino<p-sortIcon field="addressDestino"></p-sortIcon>
-        </th>
-        <th pSortableColumn="addressOrigen">address Origen<p-sortIcon field="addressOrigen"></p-sortIcon>
-        </th>
-        <th pSortableColumn="caducidad">caducidad<p-sortIcon field="caducidad"></p-sortIcon>
-        </th>
-        <th pSortableColumn="timestamp">timestamp<p-sortIcon field="timestamp"></p-sortIcon>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product>
-      <tr>
-        <td class="align-middle !text-center " *ngIf="seleccionar">
-          <input type="checkbox" (click)="checked(product)" />
-        </td>
-        <td class="align-middle 	">{{product.id}}</td>
-        <td class="align-middle	!text-center">{{product.cantidad}}</td>
-        <td class="align-middle	!text-center">{{product.addressDestino}}</td>
-        <td class="align-middle	!text-center">{{product.addressOrigen}}</td>
-        <td class="align-middle	!text-center">
-          <app-date-swap [elemento]="product.caducidad"></app-date-swap>
-        </td>
-        <td class="align-middle	">
-          <app-date-swap [elemento]="product.timestamp"></app-date-swap>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <ng-container *ngIf="data.length>0;else empty">
 
-  <div class="w-full flex justify-end">
+    <p-table [@showTrigger]="'animate'" [paginator]="true" [rows]="10" styleClass="p-datatable-striped" [value]="data"
+      responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngIf="seleccionar">Seleccionar</th>
+          <th pSortableColumn="id">id <p-sortIcon field="id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="cantidad">cantidad<p-sortIcon field="cantidad"></p-sortIcon>
+          </th>
+          <th pSortableColumn="addressDestino">address Destino<p-sortIcon field="addressDestino"></p-sortIcon>
+          </th>
+          <th pSortableColumn="addressOrigen">address Origen<p-sortIcon field="addressOrigen"></p-sortIcon>
+          </th>
+          <th pSortableColumn="caducidad">caducidad<p-sortIcon field="caducidad"></p-sortIcon>
+          </th>
+          <th pSortableColumn="timestamp">timestamp<p-sortIcon field="timestamp"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td class="align-middle !text-center " *ngIf="seleccionar">
+            <input type="checkbox" (click)="checked(product)" />
+          </td>
+          <td class="align-middle 	">{{product.id}}</td>
+          <td class="align-middle	!text-center">{{product.cantidad}}</td>
+          <td class="align-middle	!text-center">{{product.addressDestino}}</td>
+          <td class="align-middle	!text-center">{{product.addressOrigen}}</td>
+          <td class="align-middle	!text-center">
+            <app-date-swap [elemento]="product.caducidad"></app-date-swap>
+          </td>
+          <td class="align-middle	">
+            <app-date-swap [elemento]="product.timestamp"></app-date-swap>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
 
-    <button class="btn button-blue w-auto px-2  mt-2" *ngIf="seleccionar" (click)="enviarTransaccionesSeleccionadas()">
-      Enviar Seleccion Mineria
-    </button>
-  </div>
+    <div class="w-full flex justify-end">
+
+      <button class="btn button-blue w-auto px-2  mt-2" *ngIf="seleccionar"
+        (click)="enviarTransaccionesSeleccionadas()">
+        Enviar Seleccion Mineria
+      </button>
+    </div>
+  </ng-container>
 </ng-container>
+<ng-template #empty>
+  <app-empty-table></app-empty-table>
+</ng-template>

@@ -45,11 +45,14 @@ export class NodoBlockchainGateway {
       if (data.miner && data.transactions) {
         const valueLastNodo: any[] | undefined =
           await this.ormNodeService.getLastNode();
+
         let validTime = false;
         if (valueLastNodo?.length > 0) {
           validTime =
             valueLastNodo[0].timestamp + this.timeNewNode <
             new Date().getTime();
+        } else {
+          validTime = true;
         }
         if (validTime) {
           //comporobacion de que cada 10 minutos se haga un nuevo nodo
@@ -75,6 +78,11 @@ export class NodoBlockchainGateway {
                 unionTransaccion,
               )
               .then((res) => {
+                const nodoLast = valueLastNodo[0];
+                console.log(valueLastNodo);
+                const numbersNodos = nodoLast?.pos ? nodoLast?.pos : 1;
+
+                nodo.setRecompensa(this.functionRecompensas(numbersNodos));
                 this.ormNodeService
                   .insertNodo(nodo, unionTransaccion.getId())
                   .then((res) => {
@@ -85,6 +93,9 @@ export class NodoBlockchainGateway {
                     });
                   })
                   .catch((err: Error) => {
+                    this.ormUnionTransaccionService.deleteUniontransactions(
+                      unionTransaccion,
+                    );
                     client.emit('nuevo_nodo', {
                       code: 4,
                       idMark: new Date().getTime(),
@@ -114,7 +125,7 @@ export class NodoBlockchainGateway {
             code: 1,
             idMark: new Date().getTime(),
 
-            error: `error received no se ha superado el tiempo de 10 minutos por bloque`,
+            error: `error received no se ha superado el tiempo de 10 minutos por bloque o fallo en el bloque`,
           });
         }
       } else {
@@ -259,5 +270,11 @@ export class NodoBlockchainGateway {
     } else {
       return true;
     }
+  }
+
+  functionRecompensas(x: number) {
+    const numerador = Math.pow(2 * x, 3) + 1;
+    const denominador = Math.pow(x, 3);
+    return numerador / denominador;
   }
 }
