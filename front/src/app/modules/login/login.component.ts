@@ -40,9 +40,10 @@ export class LoginComponent {
               this.createArray();
             }
           }),
-          filter((el) => el.toString().hashCode() !== this.hashLogin),
+          filter((el) => el.hashCode() !== this.hashLogin),
+          filter((el) => el.length > 0),
           tap((el) => {
-            this.hashLogin = el.toString().hashCode();
+            this.hashLogin = el.hashCode();
           })
         )
         .subscribe((data) => {
@@ -53,7 +54,7 @@ export class LoginComponent {
           });
           this.formsArray.patchValue(data);
           this.numberKeys = data.length.toString();
-          this.route.navigate(['/principal']);
+          // this.route.navigate(['/principal']);
         })
     );
     this.subscribe.add(
@@ -91,6 +92,7 @@ export class LoginComponent {
       this.formsArray.value.toString().hashCode() !== this.hashLogin
     ) {
       this.store.dispatch(setKeys({ data: this.formsArray.value }));
+      this.route.navigate(['/principal']);
     }
   }
   createArray() {
